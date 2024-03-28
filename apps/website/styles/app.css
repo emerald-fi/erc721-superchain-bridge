@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+  @apply border-0 px-3 py-3 placeholder-neutral-400 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150;
+}
+
+.content p {
+  @apply text-gray-600 dark:text-gray-100  text-lg leading-relaxed my-6;
+}
+.content ul,
+.content ol {
+  @apply text-gray-600 dark:text-gray-100 text-lg mb-6;
+}
+
+.link {
+  @apply text-blue-500 dark:text-blue-300;
+}

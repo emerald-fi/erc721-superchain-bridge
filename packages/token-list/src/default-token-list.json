@@ -1,0 +1,98 @@
+{
+  "name": "Based Bridge Default",
+  "timestamp": "2023-03-18T10:40:20.241Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "",
+  "keywords": ["based-bridge", "default"],
+  "tokens": [
+    {
+      "chainId": 1,
+      "address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+      "name": "Azuki",
+      "symbol": "AZUKI",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/246/small_2x/azuki.jpeg?1707287236",
+      "extensions": {
+        "bridgeInfo": {
+          "10": {
+            "tokenAddress": "0x72fcAB96A1023B50f2Db0a73865d574b5B621928"
+          }
+        }
+      }
+    },
+    {
+      "chainId": 1,
+      "address": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+      "name": "Bored Ape Yacht Club",
+      "symbol": "BAYC",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/20/small_2x/bored-ape-yacht-club.png?1707287177",
+      "extensions": {
+        "bridgeInfo": {
+          "10": {
+            "tokenAddress": "0xc17b1216113d5FAfAcAB0ff5643686244e1b8d04"
+          }
+        }
+      }
+    },
+    {
+      "chainId": 1,
+      "address": "0x60E4d786628Fea6478F785A6d7e704777c86a7c6",
+      "name": "Mutant Ape Yacht Club",
+      "symbol": "MAYC",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/104/small_2x/mayc.png?1707287200"
+    },
+    {
+      "chainId": 1,
+      "address": "0x90b3832e2f2ade2fe382a911805b6933c056d6ed",
+      "name": "Pooly - Supporter",
+      "symbol": "POOLY1",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/456/small_2x/pooly-supporter.png?1707287326"
+    },
+    {
+      "chainId": 1,
+      "address": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+      "name": "Art Blocks",
+      "symbol": "BLOCKS",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/3174/small_2x/chromie-squiggle-by-snowfro.png?1707289872"
+    },
+    {
+      "chainId": 1,
+      "address": "0xBd3531dA5CF5857e7CfAA92426877b022e612cf8",
+      "name": "Pudgy Penguins",
+      "symbol": "PPG",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/38/small_2x/da64989d9762c8a61b3c65917edfdf97.png?1707287183"
+    },
+    {
+      "chainId": 1,
+      "address": "0x49cf6f5d44e70224e2e23fdcdd2c053f30ada28b",
+      "name": "Clone X",
+      "symbol": "CloneX",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/265/small_2x/clonex.png?1707287243"
+    },
+    {
+      "chainId": 1,
+      "address": "0x23581767a106ae21c074b2276D25e5C3e136a68b",
+      "name": "Moonbirds",
+      "symbol": "MOONBIRD",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/349/small_2x/moonbirds.png?1707287280"
+    },
+    {
+      "chainId": 1,
+      "address": "0xb7f7f6c52f2e2fdb1963eab30438024864c313f6",
+      "name": "Wrapped Cryptopunks",
+      "symbol": "WPUNKS",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/934/small_2x/wrapped-cryptopunks.png?1707287572"
+    },
+    {
+      "chainId": 1,
+      "address": "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      "name": "Doodles",
+      "symbol": "DOODLE",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/242/small_2x/3R7s-ZV0_400x400.jpg?1707287234"
+    }
+  ]
+}

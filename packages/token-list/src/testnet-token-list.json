@@ -1,0 +1,31 @@
+{
+  "name": "Based Bridge Testnet",
+  "timestamp": "2023-03-18T10:40:20.241Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "",
+  "keywords": ["based-bridge", "testnet"],
+  "tokens": [
+    {
+      "chainId": 11155111,
+      "address": "0xEd7AEda7069fD33D558ecD5D11b281359EfDb40e",
+      "name": "Emerald",
+      "symbol": "EMRLD",
+      "logoURI": "https://raw.seadn.io/files/e50201ecff78ca6b8613c2bbe4eefb83.svg",
+      "extensions": {
+        "bridgeInfo": {
+          "84532": {
+            "tokenAddress": "0x113054f9992ba521D1c4B985b449a4C301291806"
+          },
+          "11155420": {
+            "tokenAddress": "0x79351CBCFDA3B78953f19b268396cFaa80fF2298"
+          }
+        }
+      }
+    }
+  ]
+}

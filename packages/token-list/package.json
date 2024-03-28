@@ -1,0 +1,24 @@
+{
+  "name": "@emerald/erc721-token-list",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "type": "module",
+  "files": [
+    "src/index.ts"
+  ],
+  "scripts": {
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
+  },
+  "dependencies": {
+    "@wagmi/core": "^2.6.10",
+    "dotenv": "^16.4.5",
+    "viem": "^2.9.4"
+  }
+}
