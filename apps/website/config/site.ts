@@ -23,6 +23,6 @@ export const siteConfig: SiteConfig = {
   localeDefault: "en",
   links: {
     twitter: "https://twitter.com/district_labs",
-    github: "https://github.com/emerald-fi/based-bridge",
+    github: "https://github.com/emerald-fi/erc721-superchain-bridge",
   },
 }
