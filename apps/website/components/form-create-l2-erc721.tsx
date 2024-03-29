@@ -69,10 +69,7 @@ export const FormCreateL2ERC721 = ({
   const { appMode } = useAppMode()
 
   const l1Chain = l1NetworkOptions[appMode]
-  const l2Chain = useMemo(
-    () => l2NetworksOptions[appMode][Number(watchL2ChainId)]!,
-    [form.watch("l2ChainId"), appMode]
-  )
+  const l2Chain = l2NetworksOptions[appMode][Number(watchL2ChainId)]
 
   const formItems: {
     label: string
