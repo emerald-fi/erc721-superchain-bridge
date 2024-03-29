@@ -155,6 +155,9 @@ export const FormCreateL2ERC721 = ({
     }
   }, [erc721SymbolRead.data])
 
+  
+  console.log(currentChainId, l2Chain?.chainId, l2Chain?.chainId === currentChainId, 'WTF')
+
   return (
     <Form {...form}>
       <form
