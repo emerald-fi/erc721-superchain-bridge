@@ -11,11 +11,6 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-if (!process.env.MAINNET_RPC_URL) throw new Error("MAINNET_RPC_URL is not set");
-if (!process.env.BASE_RPC_URL) throw new Error("BASE_RPC_URL is not set");
-if (!process.env.OPTIMISM_RPC_URL)
-  throw new Error("OPTIMISM_RPC_URL is not set");
-
 export const l1ChainIds = [mainnet.id] as number[];
 export const l1ChainIdsTestnet = [sepolia.id] as number[];
 
