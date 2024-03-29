@@ -20,6 +20,9 @@
         "bridgeInfo": {
           "10": {
             "tokenAddress": "0x72fcAB96A1023B50f2Db0a73865d574b5B621928"
+          },
+          "8453": {
+            "tokenAddress": "0xa9D7e2D599e4679aA4EFE13894dBd2e020Bc17dd"
           }
         }
       }
@@ -34,6 +37,43 @@
         "bridgeInfo": {
           "10": {
             "tokenAddress": "0xc17b1216113d5FAfAcAB0ff5643686244e1b8d04"
+          },
+          "8453": {
+            "tokenAddress": "0x1D1e141dBc25A30536d00D7B39D668B7A6d4166F"
+          }
+        }
+      }
+    },
+    {
+      "chainId": 1,
+      "address": "0xeF1a89cbfAbE59397FfdA11Fc5DF293E9bC5Db90",
+      "name": "Based Ghouls",
+      "symbol": "GHLS",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/2147/small_2x/eb1deaa7e5f61866c2de53de127cd50a.png?1707288209",
+      "extensions": {
+        "bridgeInfo": {
+          "10": {
+            "tokenAddress": "0xa9D7e2D599e4679aA4EFE13894dBd2e020Bc17dd"
+          },
+          "8453": {
+            "tokenAddress": "0xc17b1216113d5FAfAcAB0ff5643686244e1b8d04"
+          }
+        }
+      }
+    },
+    {
+      "chainId": 1,
+      "address": "0x5Af0D9827E0c53E4799BB226655A1de152A425a5",
+      "name": "Milady",
+      "symbol": "MIL",
+      "logoURI": "https://assets.coingecko.com/nft_contracts/images/317/small_2x/milady-maker.png?1707287265",
+      "extensions": {
+        "bridgeInfo": {
+          "10": {
+            "tokenAddress": "0x9E9fb94678dC146ad4740239e6FA4E0Ef9aB86dd"
+          },
+          "8453": {
+            "tokenAddress": "0x9E9fb94678dC146ad4740239e6FA4E0Ef9aB86dd"
           }
         }
       }
