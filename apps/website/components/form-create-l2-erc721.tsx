@@ -7,7 +7,13 @@ import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDebounce } from "usehooks-ts"
-import { decodeEventLog, type Address, type BaseError } from "viem"
+import {
+  checksumAddress,
+  decodeEventLog,
+  isAddress,
+  type Address,
+  type BaseError,
+} from "viem"
 import {
   useAccount,
   useTransactionReceipt,
@@ -15,6 +21,7 @@ import {
 } from "wagmi"
 import { z } from "zod"
 
+import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
 import {
   useReadErc721Name,
   useReadErc721Symbol,
@@ -101,6 +108,19 @@ export const FormCreateL2ERC721 = ({
       type: "text",
     },
   ]
+
+  const getOtimismMintableERC721ByRemoteTokenQuery =
+    useGetOtimismMintableERC721ByRemoteTokenQuery({
+      chainId: Number(watchL2ChainId),
+      remoteToken: isAddress(watchRemoteToken)
+        ? checksumAddress(watchRemoteToken)
+        : "0x0",
+      query: {
+        enabled: isAddress(watchRemoteToken) && Boolean(Number(watchL2ChainId)),
+      },
+    })
+
+  getOtimismMintableERC721ByRemoteTokenQuery.data
 
   const { address, chainId: currentChainId } = useAccount()
   const erc721NameRead = useReadErc721Name({
@@ -216,6 +236,29 @@ export const FormCreateL2ERC721 = ({
             </FormItem>
           )}
         />
+        {getOtimismMintableERC721ByRemoteTokenQuery.data &&
+          getOtimismMintableERC721ByRemoteTokenQuery.data
+            ?.optimismMintableERC721s?.items?.length > 0 && (
+            <div className="flex flex-col gap-y-2">
+              <p className="text-sm font-medium text-red-500">
+                This NFT has already been bridged to the L2 network.
+              </p>
+              <Card className="max-h-[200px] overflow-y-auto break-words p-4">
+                {getOtimismMintableERC721ByRemoteTokenQuery.data?.optimismMintableERC721s?.items?.map(
+                  (item) => (
+                    <BlockExplorerLink
+                      key={item.id}
+                      address={item.localToken as Address}
+                      chainId={item.chainId}
+                      className="block py-0.5 text-sm underline-offset-2"
+                    >
+                      {item.localToken}
+                    </BlockExplorerLink>
+                  )
+                )}
+              </Card>
+            </div>
+          )}
         {!address ? (
           <ConnectButton className="w-full" />
         ) : l2Chain?.chainId === undefined ||

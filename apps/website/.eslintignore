@@ -4,3 +4,4 @@
 **/generated
 .next/**
 tailwind.config.js
+lib/event-cache/gql/fragment-masking.ts
