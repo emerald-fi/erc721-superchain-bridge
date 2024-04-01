@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 "use client"
 
-import { useEffect, useMemo, useState, type HTMLAttributes } from "react"
+import { useEffect, useState, type HTMLAttributes } from "react"
 import Image from "next/image"
+import { optimismMintableErc721FactoryAbi } from "@/data/abis"
 import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -44,6 +44,7 @@ import { ContractWriteButton } from "@/components/blockchain/contract-write-butt
 import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
 import { TransactionStatus } from "@/components/blockchain/transaction-status"
 
+import { BlockExplorerLink } from "./blockchain/block-explorer-link"
 import { LinkComponent } from "./shared/link-component"
 import { Card } from "./ui/card"
 
@@ -160,8 +161,6 @@ export const FormCreateL2ERC721 = ({
     }
   }, [erc721SymbolRead.data])
 
-  console.log(createOptimismMintableERC721, "createOptimismMintableERC721")
-
   return (
     <Form {...form}>
       <form
@@ -244,42 +243,14 @@ export const FormCreateL2ERC721 = ({
             Switch Network
           </SwitchNetworkButton>
         )}
-        {!simulateCreateOptimismMintableERC721?.error?.message.includes(
-          "Execution reverted for an unknown reason"
-        ) && (
-          <TransactionStatus
-            className="mt-5"
-            error={simulateCreateOptimismMintableERC721.error as BaseError}
-            hash={createOptimismMintableERC721.data}
-            isError={simulateCreateOptimismMintableERC721.isError}
-            isLoadingTx={isLoadingTx}
-            isSuccess={isSuccess}
-          />
-        )}
-        {simulateCreateOptimismMintableERC721?.error?.message.includes(
-          "Execution reverted for an unknown reason"
-        ) && (
-          <Card className="p-3 text-xs">
-            <p className="mb-2 font-bold text-red-500">
-              The NFT likely already exists on the destination L2 network.
-            </p>
-            <p className="mb-2">
-              If you think the NFT should be included in the{" "}
-              <LinkComponent
-                className="link"
-                href="https://github.com/emerald-fi/erc721-superchain-bridge/blob/main/packages/token-list/src/default-token-list.json"
-              >
-                Emerald Superchain NFT token list
-              </LinkComponent>
-              , please review the{" "}
-              <LinkComponent className="link" href="/documentation">
-                documentation
-              </LinkComponent>{" "}
-              on how to get a collection listed and verified.
-            </p>
-            <p className="">INSERT TOKEN ADDRESS</p>
-          </Card>
-        )}
+        <TransactionStatus
+          className="mt-5"
+          error={simulateCreateOptimismMintableERC721.error as BaseError}
+          hash={createOptimismMintableERC721.data}
+          isError={simulateCreateOptimismMintableERC721.isError}
+          isLoadingTx={isLoadingTx}
+          isSuccess={isSuccess}
+        />
       </form>
       <NFTAddressFromTransactionReceipt
         transactionHash={createOptimismMintableERC721.data}
@@ -302,33 +273,7 @@ const NFTAddressFromTransactionReceipt = ({
   useEffect(() => {
     if (result.data) {
       const topics = decodeEventLog({
-        abi: [
-          {
-            anonymous: false,
-            inputs: [
-              {
-                indexed: true,
-                internalType: "address",
-                name: "localToken",
-                type: "address",
-              },
-              {
-                indexed: true,
-                internalType: "address",
-                name: "remoteToken",
-                type: "address",
-              },
-              {
-                indexed: false,
-                internalType: "address",
-                name: "deployer",
-                type: "address",
-              },
-            ],
-            name: "OptimismMintableERC721Created",
-            type: "event",
-          },
-        ],
+        abi: optimismMintableErc721FactoryAbi,
         data: result.data.logs[0].data,
         topics: result.data.logs[0].topics,
       })
@@ -338,7 +283,7 @@ const NFTAddressFromTransactionReceipt = ({
     }
   }, [result.data])
 
-  if(!localToken) return null
+  if (!localToken) return null
 
   return (
     <Card className="mt-4 p-3 text-xs">
@@ -346,7 +291,14 @@ const NFTAddressFromTransactionReceipt = ({
         <span className="font-bold">Congratulations!</span> The L2 NFT has been
         successfully created.
       </p>
-      <p className="mb-2 font-bold text-blue-700">{localToken}</p>
+      <div className="mb-2">
+        <BlockExplorerLink
+          address={localToken }
+          className="font-bold text-blue-700 no-underline underline-offset-2 hover:underline"
+        >
+          {localToken}
+        </BlockExplorerLink>
+      </div>
       <p className="mb-2">
         Please review the{" "}
         <LinkComponent className="link" href="/documentation">
