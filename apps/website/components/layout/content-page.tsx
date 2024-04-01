@@ -19,7 +19,7 @@ export function ContentPage({
   return (
     <div
       className={cn(
-        "container relative mx-auto mt-8 flex h-full w-full max-w-3xl flex-col items-center justify-center gap-y-4 px-8 md:gap-y-8 lg:px-0",
+        "container relative mx-auto mt-8 flex h-full w-full max-w-3xl flex-col items-center justify-center gap-y-4 px-8 pb-20 md:gap-y-8 lg:px-0",
         className
       )}
       {...props}
@@ -28,7 +28,7 @@ export function ContentPage({
       <h3 className="text-center text-4xl font-black md:text-7xl">
         {contentTitle}
       </h3>
-      <h3 className="text-center text-2xl font-normal md:text-5xl">
+      <h3 className="text-center text-2xl font-normal md:text-3xl">
         {contentSubtitle}
       </h3>
       <div className="content mx-auto w-full max-w-full break-words">
