@@ -1,21 +1,10 @@
 import { createConfig } from "@ponder/core";
-import { parseAbiItem } from "abitype";
 import { http } from "viem";
-
-import { OptimismMintableERC20Factory } from "./abis/OptimismMintableERC20Factory";
-// import { L1ERC721Bridge } from "./abis/L1ERC721Bridge";
-// import { L2ERC721Bridge } from "./abis/L2ERC721Bridge";
-
-const OptimismMintableERC20FactoryEvent = parseAbiItem(
-  "event OptimismMintableERC721Created(address indexed localToken, address indexed remoteToken, address deployer)",
-);
+import { OptimismMintableERC721Factory } from "./abis/OptimismMintableERC721Factory";
+import { OPTIMISM_MINTABLE_ERC721_FACTORY_ADDRESS } from "./constants";
 
 export default createConfig({
   networks: {
-    ethereum: {
-      chainId: 1,
-      transport: http(process.env.PONDER_RPC_URL_1),
-    },
     optimism: {
       chainId: 10,
       transport: http(process.env.PONDER_RPC_URL_10),
@@ -33,24 +22,34 @@ export default createConfig({
       transport: http(process.env.PONDER_RPC_URL_84532),
     },
   },
+
   contracts: {
-    OptimismMintableERC20Factory: {
+    OptimismMintableERC721Factory: {
       network: {
-        base: {
-          address: "0x4200000000000000000000000000000000000017",
-          startBlock: Number(process.env.PONDER_OPTIMISM_START_BLOCK) || 0,
-          endBlock: 10406249,
-        },
+        // Production
         optimism: {
-          address: "0x4200000000000000000000000000000000000017",
-          startBlock: Number(process.env.PONDER_BASE_START_BLOCK) || 0,
-          endBlock: 116002024,
-        }
+          address: OPTIMISM_MINTABLE_ERC721_FACTORY_ADDRESS,
+          // Block number of the first transaction
+          startBlock: 116002023
+        },
+        base: {
+          address: OPTIMISM_MINTABLE_ERC721_FACTORY_ADDRESS,
+          // Block number of the first transaction
+          startBlock: 2297164
+        },
+        // // Testnet
+        optimismSepolia: {
+          address: OPTIMISM_MINTABLE_ERC721_FACTORY_ADDRESS,
+          // Block number of the first transaction
+          startBlock: 7074623
+        },
+        baseSepolia: {
+          address: OPTIMISM_MINTABLE_ERC721_FACTORY_ADDRESS,
+          // Block number of the first transaction
+          startBlock: 6932093
+        },
       },
-      abi: OptimismMintableERC20Factory,
-      filter: {
-        event: 'OptimismMintableERC721Created'
-      },
+      abi: OptimismMintableERC721Factory,
     },
   },
 });
