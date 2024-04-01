@@ -133,7 +133,7 @@ export const FormCreateL2ERC721 = ({
     hash: createOptimismMintableERC721.data,
   })
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = () => {
     createOptimismMintableERC721.writeContract(
       simulateCreateOptimismMintableERC721.data!.request
     )
@@ -262,9 +262,9 @@ export const FormCreateL2ERC721 = ({
 const NFTAddressFromTransactionReceipt = ({
   transactionHash,
 }: {
-  transactionHash?: `0x${string}`
+  transactionHash?: Address
 }) => {
-  const [localToken, setLocalToken] = useState<`0x${string}` | undefined>()
+  const [localToken, setLocalToken] = useState<Address>()
 
   const result = useTransactionReceipt({
     hash: transactionHash,
@@ -272,10 +272,12 @@ const NFTAddressFromTransactionReceipt = ({
 
   useEffect(() => {
     if (result.data) {
+      const log = result.data.logs[0]
+      if (!log) return
       const topics = decodeEventLog({
         abi: optimismMintableErc721FactoryAbi,
-        data: result.data.logs[0].data,
-        topics: result.data.logs[0].topics,
+        data: log.data,
+        topics: log.topics,
       })
       if (topics?.args?.localToken) {
         setLocalToken(topics.args.localToken)
@@ -293,7 +295,7 @@ const NFTAddressFromTransactionReceipt = ({
       </p>
       <div className="mb-2">
         <BlockExplorerLink
-          address={localToken }
+          address={localToken}
           className="font-bold text-blue-700 no-underline underline-offset-2 hover:underline"
         >
           {localToken}
