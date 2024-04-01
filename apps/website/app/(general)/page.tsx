@@ -253,7 +253,7 @@ export default function HomePage() {
   )
 }
 
-const SectionImportantLinks = (props) => {
+const SectionImportantLinks = () => {
   return (
     <div className="container mt-20 flex flex-col justify-center">
       <p className="text-center text-sm">

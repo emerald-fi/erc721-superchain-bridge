@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 "use client"
 
 import { useEffect, useMemo, useState, type HTMLAttributes } from "react"
@@ -243,15 +244,7 @@ export const FormCreateL2ERC721 = ({
             Switch Network
           </SwitchNetworkButton>
         )}
-        {console.log(
-          createOptimismMintableERC721.data,
-          "createOptimismMintableERC721"
-        )}
-        {console.log(
-          simulateCreateOptimismMintableERC721,
-          "simulateCreateOptimismMintableERC721"
-        )}
-        {!simulateCreateOptimismMintableERC721?.error?.shortMessage.includes(
+        {!simulateCreateOptimismMintableERC721?.error?.message.includes(
           "Execution reverted for an unknown reason"
         ) && (
           <TransactionStatus
@@ -263,7 +256,7 @@ export const FormCreateL2ERC721 = ({
             isSuccess={isSuccess}
           />
         )}
-        {simulateCreateOptimismMintableERC721?.error?.shortMessage.includes(
+        {simulateCreateOptimismMintableERC721?.error?.message.includes(
           "Execution reverted for an unknown reason"
         ) && (
           <Card className="p-3 text-xs">
@@ -344,6 +337,8 @@ const NFTAddressFromTransactionReceipt = ({
       }
     }
   }, [result.data])
+
+  if(!localToken) return null
 
   return (
     <Card className="mt-4 p-3 text-xs">
