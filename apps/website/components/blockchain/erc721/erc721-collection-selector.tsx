@@ -239,7 +239,7 @@ export function Erc721CollectionSelector({
             </CommandList>
           </Command>
           <hr className="border-t border-neutral-200 dark:border-neutral-700" />
-          <p className="mb-2 mb-5 inline-block text-center text-xs">
+          <p className="mb-5 inline-block text-center text-xs">
             <span className="font-bold">
               Don't see an NFT collection you want to bridge?
             </span>{" "}

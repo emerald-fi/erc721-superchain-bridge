@@ -293,7 +293,7 @@ const NFTAddressFromTransactionReceipt = ({
 }: {
   transactionHash?: `0x${string}`
 }) => {
-  const [localToken, setLocalToken] = useState<`0x${string}` | undefined>("")
+  const [localToken, setLocalToken] = useState<`0x${string}` | undefined>()
 
   const result = useTransactionReceipt({
     hash: transactionHash,
