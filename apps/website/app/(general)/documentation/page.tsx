@@ -130,7 +130,7 @@ export default function DocumentationPage() {
       <p>
         <LinkComponent
           className="link"
-          href="https://warpcast.com/~/channel/emerald"
+          href="https://optimism.easscan.org/attestation/attestWithSchema/0xf58b8b212ef75ee8cd7e8d803c37c03e0519890502d5e99ee2412aae1456cafe"
         >
           Click here
         </LinkComponent>{" "}
