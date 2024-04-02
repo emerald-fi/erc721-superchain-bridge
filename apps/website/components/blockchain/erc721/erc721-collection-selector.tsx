@@ -316,9 +316,7 @@ export function Erc721CollectionSelector({
                     </CommandItem>
                   )
                 })}
-              {filteredTokenList &&
-              filteredTokenList.length === 0 &&
-              chainType === "L1"
+              {chainType === "L1"
                 ? getOtimismMintableERC721ByRemoteTokenQuery.data && (
                     <div>
                       {getOtimismMintableERC721ByRemoteTokenQuery.data.optimismMintableERC721s.items.map(
