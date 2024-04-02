@@ -1,15 +1,27 @@
 "use client"
 
-import { useEffect, useMemo, type HTMLAttributes } from "react"
+import { useEffect, useState, type HTMLAttributes } from "react"
 import Image from "next/image"
+import { optimismMintableErc721FactoryAbi } from "@/data/abis"
 import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDebounce } from "usehooks-ts"
-import { type Address, type BaseError } from "viem"
-import { useAccount, useWaitForTransactionReceipt } from "wagmi"
+import {
+  checksumAddress,
+  decodeEventLog,
+  isAddress,
+  type Address,
+  type BaseError,
+} from "viem"
+import {
+  useAccount,
+  useTransactionReceipt,
+  useWaitForTransactionReceipt,
+} from "wagmi"
 import { z } from "zod"
 
+import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
 import {
   useReadErc721Name,
   useReadErc721Symbol,
@@ -38,6 +50,10 @@ import { ConnectButton } from "@/components/blockchain/connect-button"
 import { ContractWriteButton } from "@/components/blockchain/contract-write-button"
 import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
 import { TransactionStatus } from "@/components/blockchain/transaction-status"
+
+import { BlockExplorerLink } from "./blockchain/block-explorer-link"
+import { LinkComponent } from "./shared/link-component"
+import { Card } from "./ui/card"
 
 const formSchema = z.object({
   remoteToken: z.string().min(1, "Remote Token is required"),
@@ -93,6 +109,17 @@ export const FormCreateL2ERC721 = ({
     },
   ]
 
+  const getOtimismMintableERC721ByRemoteTokenQuery =
+    useGetOtimismMintableERC721ByRemoteTokenQuery({
+      chainId: Number(watchL2ChainId),
+      remoteToken: isAddress(watchRemoteToken)
+        ? checksumAddress(watchRemoteToken)
+        : "0x0",
+      query: {
+        enabled: isAddress(watchRemoteToken) && Boolean(Number(watchL2ChainId)),
+      },
+    })
+
   const { address, chainId: currentChainId } = useAccount()
   const erc721NameRead = useReadErc721Name({
     chainId: l1Chain.chainId,
@@ -124,7 +151,7 @@ export const FormCreateL2ERC721 = ({
     hash: createOptimismMintableERC721.data,
   })
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = () => {
     createOptimismMintableERC721.writeContract(
       simulateCreateOptimismMintableERC721.data!.request
     )
@@ -207,6 +234,32 @@ export const FormCreateL2ERC721 = ({
             </FormItem>
           )}
         />
+        {getOtimismMintableERC721ByRemoteTokenQuery.data &&
+          getOtimismMintableERC721ByRemoteTokenQuery.data
+            ?.optimismMintableERC721s?.items?.length > 0 && (
+            <div className="flex flex-col gap-y-2">
+              <p className="text-center text-sm font-medium text-red-500">
+                The NFT collection has already been synced with{" "}
+                {l2NetworksOptions[appMode][currentChainId || 1].name}. If the
+                token is not in the Emerald Superchain NFT token list, please
+                contact the collection creator to have it added.
+              </p>
+              <Card className="max-h-[200px] overflow-y-auto break-words p-4">
+                {getOtimismMintableERC721ByRemoteTokenQuery.data?.optimismMintableERC721s?.items?.map(
+                  (item) => (
+                    <BlockExplorerLink
+                      key={item.id}
+                      address={item.localToken as Address}
+                      chainId={item.chainId}
+                      className="block py-0.5 text-sm underline-offset-2"
+                    >
+                      {item.localToken}
+                    </BlockExplorerLink>
+                  )
+                )}
+              </Card>
+            </div>
+          )}
         {!address ? (
           <ConnectButton className="w-full" />
         ) : l2Chain?.chainId === undefined ||
@@ -243,6 +296,69 @@ export const FormCreateL2ERC721 = ({
           isSuccess={isSuccess}
         />
       </form>
+      <NFTAddressFromTransactionReceipt
+        transactionHash={createOptimismMintableERC721.data}
+      />
     </Form>
+  )
+}
+
+const NFTAddressFromTransactionReceipt = ({
+  transactionHash,
+}: {
+  transactionHash?: Address
+}) => {
+  const [localToken, setLocalToken] = useState<Address>()
+
+  const result = useTransactionReceipt({
+    hash: transactionHash,
+  })
+
+  useEffect(() => {
+    if (result.data) {
+      const log = result.data.logs[0]
+      if (!log) return
+      const topics = decodeEventLog({
+        abi: optimismMintableErc721FactoryAbi,
+        data: log.data,
+        topics: log.topics,
+      })
+      if (topics?.args?.localToken) {
+        setLocalToken(topics.args.localToken)
+      }
+    }
+  }, [result.data])
+
+  if (!localToken) return null
+
+  return (
+    <Card className="mt-4 p-3 text-sm">
+      <p className="mb-2">
+        <span className="font-bold">Success!</span> The L2 NFT has been
+        successfully created.
+      </p>
+      <div className="mb-2">
+        <BlockExplorerLink
+          address={localToken}
+          className="link font-bold no-underline underline-offset-2 hover:underline"
+        >
+          {localToken}
+        </BlockExplorerLink>
+      </div>
+      <p className="mb-2">
+        Please review the{" "}
+        <LinkComponent className="link font-bold" href="/documentation">
+          documentation
+        </LinkComponent>{" "}
+        to learn how a collection can listed/verified in the{" "}
+        <LinkComponent
+          className="link font-bold"
+          href="https://github.com/emerald-fi/erc721-superchain-bridge/blob/main/packages/token-list/src/default-token-list.json"
+        >
+          Emerald Superchain NFT token list
+        </LinkComponent>
+        .
+      </p>
+    </Card>
   )
 }

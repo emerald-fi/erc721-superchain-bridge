@@ -11,7 +11,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <div className="relative flex min-h-screen flex-col bg-neutral-50 dark:bg-neutral-800">
       <SiteHeader />
-      <main className="flex-1 pb-8">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   )

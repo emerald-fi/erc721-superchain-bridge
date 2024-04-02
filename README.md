@@ -1,5 +1,3 @@
-<!-- ![image](/apps/website/app/opengraph-image.png) -->
-
 # Based Bridge - Native Superchain ERC721 Bridge
 
 The Based Bridge application allows you to bridge your NFTs from Ethereum to the Superchain - and back again if needed. It uses the Optimism developed smart contracts to bridge the NFTs between the two networks.

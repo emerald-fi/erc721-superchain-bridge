@@ -17,6 +17,7 @@
       "symbol": "EMRLD",
       "logoURI": "https://raw.seadn.io/files/e50201ecff78ca6b8613c2bbe4eefb83.svg",
       "extensions": {
+        "verification": "https://warpcast.com/kames/0x1a34f541",
         "bridgeInfo": {
           "84532": {
             "tokenAddress": "0x113054f9992ba521D1c4B985b449a4C301291806"

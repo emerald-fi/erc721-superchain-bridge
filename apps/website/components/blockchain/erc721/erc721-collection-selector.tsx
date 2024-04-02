@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/command"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { ImageIpfs } from "@/components/blockchain/image-ipfs"
+import { LinkComponent } from "@/components/shared/link-component"
 
 import { Token, TokenList } from "./types"
 
@@ -143,16 +144,16 @@ export function Erc721CollectionSelector({
           ))}
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-[550px] overflow-hidden p-0 shadow-lg">
+        <DialogContent className="max-w-[550px] overflow-hidden p-0 pb-4 shadow-lg">
           <Command
             shouldFilter={false}
             className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
           >
-            <h2 className="ml-6 mt-4 font-semibold">Select A Collection</h2>
+            <h2 className="ml-6 mt-4 font-semibold">Select A NFT Collection</h2>
             <CommandInput
               value={searchValue}
               onValueChange={setSearchValue}
-              placeholder="Search name or paste address"
+              placeholder="Search by collection name or mainnet address"
             />
             <CommandList className="m-3">
               <CommandEmpty>No tokens found.</CommandEmpty>
@@ -237,6 +238,17 @@ export function Erc721CollectionSelector({
                 })}
             </CommandList>
           </Command>
+          <hr className="border-t border-neutral-200 dark:border-neutral-700" />
+          <p className="mb-5 inline-block text-center text-xs">
+            <span className="font-bold">
+              Don't see an NFT collection you want to bridge?
+            </span>{" "}
+            <br /> Try searching using the collection address or{" "}
+            <LinkComponent className="link font-bold" href="/documentation">
+              learn how to add a new collection
+            </LinkComponent>
+            .
+          </p>
         </DialogContent>
       </Dialog>
     </>
