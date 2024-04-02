@@ -124,7 +124,7 @@ export default function DocumentationPage() {
         creator/team is unable to access the original private keys that deployed
         the smart contract, a public statement will also work.
       </p>
-      <p className=''>
+      <p>
       <LinkComponent
         className="link"
         href="https://warpcast.com/~/channel/emerald"
@@ -134,24 +134,24 @@ export default function DocumentationPage() {
       <h4 className="text-2xl font-bold">
         Step 3. Update the Emerald Superchain NFT token list
       </h4>
-      <p className=''>
+      <p>
         The final step is to add the new NFT collection to the Emerald Superchain NFT token list. The token list is a JSON file that contains all the verified L2 NFT collections that are available on the Based Bridge application.
       </p>
-      <p className=''>
+      <p>
         <LinkComponent className="link" href="https://github.com/emerald-fi/erc721-superchain-bridge/blob/main/packages/token-list/src/default-token-list.json">
           Emerald NFT Superchain Token List
         </LinkComponent>
       </p>
-      <p className=''>
+      <p>
         The testnet token list has a complete example using the Emerald NFT collection. You can use this as a reference when adding your collection to the mainnet token list.
       </p>
-      <p className=''>
+      <p>
         <LinkComponent className="link" href="https://github.com/emerald-fi/erc721-superchain-bridge/blob/main/packages/token-list/src/testnet-token-list.json">
           Testnet Emerald NFT Superchain Token List
         </LinkComponent>
       </p>
       <h3 className='text-xl font-bold'>Technical User</h3>
-      <p className=''>
+      <p>
         If you are a technical user and would like to add a new L2 NFT collection to the Emerald Superchain NFT token list, you can submit a pull request to the Github repository.
       </p>
       <ol className='list-decimal pl-8'>
@@ -169,7 +169,7 @@ export default function DocumentationPage() {
         </li>
       </ol>
       <h3 className='text-xl font-bold'>Non-Technical User</h3>
-      <p className=''>
+      <p>
         If you are a non-technical user and would like to add a new L2 NFT collection to the Emerald Superchain NFT token list, you can reach out to the Emerald team directly via Telegram.
       </p>
       <p className="">
@@ -177,7 +177,7 @@ export default function DocumentationPage() {
           Emerald Telegram Channel
         </LinkComponent>
       </p>
-      <p className=''>
+      <p>
         We'll help you get everything setup and added to the Emerald Superchain NFT token list. You just need to provide the necessary information and we'll take care of the rest.
       </p>
 
