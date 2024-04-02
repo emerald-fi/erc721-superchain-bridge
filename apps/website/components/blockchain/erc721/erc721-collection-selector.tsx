@@ -199,7 +199,7 @@ export function Erc721CollectionSelector({
         {selectedToken !== undefined && (
           <div className="flex items-center gap-x-2">
             <ImageIpfs
-              alt={`${selectedTokenData?.name} logo`}
+              alt={`${selectedTokenData?.name || ""} logo`}
               className="h-12 w-12 rounded-md"
               src={selectedTokenData?.logoURI ?? "/logo.svg"}
             />
