@@ -240,9 +240,9 @@ export const FormCreateL2ERC721 = ({
             <div className="flex flex-col gap-y-2">
               <p className="text-center text-sm font-medium text-red-500">
                 The NFT collection has already been synced with{" "}
-                {l2NetworksOptions[appMode][currentChainId || 1].name}. If the token
-                is not in the Emerald Superchain NFT token list, please contact
-                the collection creator to have it added.
+                {l2NetworksOptions[appMode][currentChainId || 1].name}. If the
+                token is not in the Emerald Superchain NFT token list, please
+                contact the collection creator to have it added.
               </p>
               <Card className="max-h-[200px] overflow-y-auto break-words p-4">
                 {getOtimismMintableERC721ByRemoteTokenQuery.data?.optimismMintableERC721s?.items?.map(
