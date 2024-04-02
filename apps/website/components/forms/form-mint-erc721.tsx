@@ -32,7 +32,7 @@ import { SwitchNetworkButton } from "@/components/blockchain/switch-network-butt
 import { TransactionStatus } from "@/components/blockchain/transaction-status"
 import { LinkComponent } from "@/components/shared/link-component"
 
-import { queryClient } from "./providers/root-provider"
+import { queryClient } from "../providers/root-provider"
 
 const EMERALD_ERC721_ADDRESS_SEPOLIA =
   "0xEd7AEda7069fD33D558ecD5D11b281359EfDb40e"

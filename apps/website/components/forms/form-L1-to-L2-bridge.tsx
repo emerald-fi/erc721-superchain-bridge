@@ -17,7 +17,6 @@ import {
   useSimulateErc721Approve,
   useWriteErc721Approve,
 } from "@/lib/generated/blockchain"
-import { useTokenList } from "@/lib/hooks/use-token-list"
 import { useNftsForOwner } from "@/lib/hooks/web3/use-nfts-for-owner"
 import { type AppMode } from "@/lib/state/app-mode"
 import { cn } from "@/lib/utils"
@@ -37,8 +36,9 @@ interface FormL1ToL2BridgeProps extends HTMLAttributes<HTMLDivElement> {
   localToken: Address
   remoteToken: Address
   tokenId: string
+  name: string
+  logoURI: string
   appMode: AppMode
-  destinationNetwork: string
   l1ERC721BridgeAddress: Address
   l2ChainId: number
   onBack?: () => void
@@ -48,7 +48,8 @@ export function FormL1ToL2Bridge({
   localToken,
   remoteToken,
   tokenId,
-  destinationNetwork,
+  name,
+  logoURI,
   l1ERC721BridgeAddress,
   l2ChainId,
   className,
@@ -58,11 +59,6 @@ export function FormL1ToL2Bridge({
 }: FormL1ToL2BridgeProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
 
-  const tokenList = useTokenList()
-  const contractAddresses = tokenList.tokens.map(
-    (token) => token.address as Address
-  )
-
   const l1Chain = l1NetworkOptions[appMode]
   const l2Chains = l2NetworksOptions[appMode]
 
@@ -70,7 +66,7 @@ export function FormL1ToL2Bridge({
   const { data: nfts } = useNftsForOwner({
     chainId: l1Chain.chainId,
     owner: address,
-    contractAddresses,
+    contractAddresses: [localToken],
   })
 
   const { chainId: currentChainId } = useAccount()
@@ -104,11 +100,6 @@ export function FormL1ToL2Bridge({
     },
   })
 
-  const selectedToken = useMemo(
-    () => tokenList.tokens.find((token) => token.address === localToken),
-    [localToken]
-  )
-
   const nft = useMemo(() => {
     return nfts?.find(
       (nft) =>
@@ -136,23 +127,19 @@ export function FormL1ToL2Bridge({
   }),
     [waitForErc721Bridge.isSuccess]
 
-  if (!selectedToken) {
-    return <div>No Token found</div>
-  }
-
   return (
     <div className={cn("flex flex-col gap-y-10", className)} {...props}>
       <div className="flex flex-col gap-y-3">
         <Label>Collection</Label>
         <div className="flex items-center gap-x-3 p-2">
           <ImageIpfs
-            alt={`${selectedToken.name} logo`}
+            alt={`${name} logo`}
             className="h-14 w-14 rounded-md"
-            src={selectedToken.logoURI}
+            src={
+              logoURI === undefined || logoURI === "" ? "/logo.svg" : logoURI
+            }
           />
-          <h3 className="text-left text-xl font-semibold">
-            {selectedToken.name}
-          </h3>
+          <h3 className="text-left text-xl font-semibold">{name}</h3>
         </div>
       </div>
       <div className="flex flex-col gap-y-3">
@@ -168,7 +155,7 @@ export function FormL1ToL2Bridge({
         </div>
         <div className="flex w-full items-center justify-between text-sm">
           <h3 className="font-semibold">
-            {l2Chains[Number(destinationNetwork)]?.name + " Address"}
+            {l2Chains[l2ChainId]?.name + " Address"}
           </h3>
           <BlockExplorerLink
             className="no-underline underline-offset-2 hover:underline"
@@ -184,7 +171,7 @@ export function FormL1ToL2Bridge({
           <div className="text-lg">
             You have successfully bridged your NFT to the{" "}
             <span className="font-semibold">
-              {l2Chains[Number(destinationNetwork)]?.name} L2
+              {l2Chains[l2ChainId]?.name} L2
             </span>
             . In a few minutes, you will be able to see it in your wallet.
           </div>
@@ -278,7 +265,7 @@ export function FormL1ToL2Bridge({
           </div>
         </>
       )}
-      {waitForErc721Approve.isLoading && (
+      {waitForErc721Approve.isLoading ? (
         <TransactionStatus
           error={simulateErc721Approve.error as BaseError}
           hash={writeErc721Approve.data}
@@ -286,14 +273,15 @@ export function FormL1ToL2Bridge({
           isLoadingTx={waitForErc721Approve.isLoading}
           isSuccess={waitForErc721Approve.isSuccess}
         />
+      ) : (
+        <TransactionStatus
+          error={simulateErc721Bridge.error as BaseError}
+          hash={writeErc721Bridge.data}
+          isError={simulateErc721Bridge.isError}
+          isLoadingTx={waitForErc721Bridge.isLoading}
+          isSuccess={waitForErc721Bridge.isSuccess}
+        />
       )}
-      <TransactionStatus
-        error={simulateErc721Bridge.error as BaseError}
-        hash={writeErc721Bridge.data}
-        isError={simulateErc721Bridge.isError}
-        isLoadingTx={waitForErc721Bridge.isLoading}
-        isSuccess={waitForErc721Bridge.isSuccess}
-      />
     </div>
   )
 }

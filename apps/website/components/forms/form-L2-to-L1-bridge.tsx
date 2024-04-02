@@ -17,7 +17,6 @@ import {
   useSimulateErc721Approve,
   useWriteErc721Approve,
 } from "@/lib/generated/blockchain"
-import { useTokenList } from "@/lib/hooks/use-token-list"
 import { useNftsForOwner } from "@/lib/hooks/web3/use-nfts-for-owner"
 import { type AppMode } from "@/lib/state/app-mode"
 import { cn } from "@/lib/utils"
@@ -37,6 +36,8 @@ interface FormL2ToL1BridgePropsProps extends HTMLAttributes<HTMLDivElement> {
   localToken: Address
   remoteToken: Address
   tokenId: string
+  name: string
+  logoURI: string
   appMode: AppMode
   sourceNetwork: string
   l2ERC721BridgeAddress: Address
@@ -47,6 +48,8 @@ export function FormL2ToL1Bridge({
   localToken,
   remoteToken,
   tokenId,
+  name,
+  logoURI,
   sourceNetwork,
   l2ERC721BridgeAddress,
   className,
@@ -56,12 +59,6 @@ export function FormL2ToL1Bridge({
 }: FormL2ToL1BridgePropsProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
 
-  const tokenList = useTokenList()
-  const contractAddresses = tokenList.tokens.map(
-    (token) =>
-      token?.extensions?.bridgeInfo?.[sourceNetwork]?.tokenAddress as Address
-  )
-
   const l1Chain = l1NetworkOptions[appMode]
   const l2Chains = l2NetworksOptions[appMode]
 
@@ -69,7 +66,7 @@ export function FormL2ToL1Bridge({
   const { data: nfts } = useNftsForOwner({
     chainId: Number(sourceNetwork),
     owner: address,
-    contractAddresses,
+    contractAddresses: [localToken],
   })
 
   const { chainId: currentChainId } = useAccount()
@@ -103,17 +100,6 @@ export function FormL2ToL1Bridge({
     },
   })
 
-  const selectedToken = useMemo(
-    () =>
-      tokenList.tokens.find(
-        (token) =>
-          token?.extensions?.bridgeInfo?.[
-            sourceNetwork
-          ]?.tokenAddress.toLowerCase() === localToken.toLowerCase()
-      ),
-    [localToken]
-  )
-
   const nft = useMemo(() => {
     return nfts?.find(
       (nft) =>
@@ -141,23 +127,19 @@ export function FormL2ToL1Bridge({
   }),
     [waitForErc721Bridge.isSuccess]
 
-  if (!selectedToken) {
-    return <div>No Token found</div>
-  }
-
   return (
     <div className={cn("flex flex-col gap-y-10", className)} {...props}>
       <div className="flex flex-col gap-y-3">
         <Label>Collection</Label>
         <div className="flex items-center gap-x-3 p-2">
           <ImageIpfs
-            alt={`${selectedToken.name} logo`}
+            alt={`${name} logo`}
             className="h-14 w-14 rounded-md"
-            src={selectedToken.logoURI}
+            src={
+              logoURI === undefined || logoURI === "" ? "/logo.svg" : logoURI
+            }
           />
-          <h3 className="text-left text-xl font-semibold">
-            {selectedToken.name}
-          </h3>
+          <h3 className="text-left text-xl font-semibold">{name}</h3>
         </div>
       </div>
       <div className="flex flex-col gap-y-3">

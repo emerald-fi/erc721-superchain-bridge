@@ -16,7 +16,9 @@ import * as types from "./graphql"
 const documents = {
   "\n  query allOptimismMintableERC721Query($limit: Int) {\n    optimismMintableERC721s(limit: $limit) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n":
     types.AllOptimismMintableErc721QueryDocument,
-  "\n  query getOtimismMintableERC721ByRemoteTokenQuery(\n    $remoteToken: String!\n    $chainId: Int!\n  ) {\n    optimismMintableERC721s(\n      where: { remoteToken: $remoteToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n":
+  "\n  query getOtimismMintableERC721ByLocalTokenQuery(\n    $localToken: String!\n    $chainId: Int\n  ) {\n    optimismMintableERC721s(\n      where: { localToken: $localToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n":
+    types.GetOtimismMintableErc721ByLocalTokenQueryDocument,
+  "\n  query getOtimismMintableERC721ByRemoteTokenQuery(\n    $remoteToken: String!\n    $chainId: Int\n  ) {\n    optimismMintableERC721s(\n      where: { remoteToken: $remoteToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n":
     types.GetOtimismMintableErc721ByRemoteTokenQueryDocument,
 }
 
@@ -44,8 +46,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query getOtimismMintableERC721ByRemoteTokenQuery(\n    $remoteToken: String!\n    $chainId: Int!\n  ) {\n    optimismMintableERC721s(\n      where: { remoteToken: $remoteToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query getOtimismMintableERC721ByRemoteTokenQuery(\n    $remoteToken: String!\n    $chainId: Int!\n  ) {\n    optimismMintableERC721s(\n      where: { remoteToken: $remoteToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n"]
+  source: "\n  query getOtimismMintableERC721ByLocalTokenQuery(\n    $localToken: String!\n    $chainId: Int\n  ) {\n    optimismMintableERC721s(\n      where: { localToken: $localToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query getOtimismMintableERC721ByLocalTokenQuery(\n    $localToken: String!\n    $chainId: Int\n  ) {\n    optimismMintableERC721s(\n      where: { localToken: $localToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query getOtimismMintableERC721ByRemoteTokenQuery(\n    $remoteToken: String!\n    $chainId: Int\n  ) {\n    optimismMintableERC721s(\n      where: { remoteToken: $remoteToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query getOtimismMintableERC721ByRemoteTokenQuery(\n    $remoteToken: String!\n    $chainId: Int\n  ) {\n    optimismMintableERC721s(\n      where: { remoteToken: $remoteToken, chainId: $chainId }\n    ) {\n      items {\n        id\n        chainId\n        blockNumber\n        localToken\n        localName\n        localSymbol\n        remoteToken\n        remoteName\n        remoteSymbol\n        deployer\n      }\n    }\n  }\n"]
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

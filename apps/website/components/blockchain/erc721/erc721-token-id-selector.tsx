@@ -40,18 +40,25 @@ export function Erc721TokenIdSelector({
     [nfts, contractAddress]
   )
 
-  if (!filteredTokenList?.length)
+  if (nfts === undefined) {
+    return <Skeleton className="h-24 w-full rounded-xl" />
+  }
+
+  if (!filteredTokenList?.length) {
     return (
-      <Card className="w-full p-3 py-6">
-        <p className="text-center text-sm text-neutral-500 dark:text-neutral-400">
-          <span className="font-bold">
-            You're not the owner of any tokens in this collection.
-          </span>{" "}
-          <br />
-          Please select another collection or connect to a different wallet.
-        </p>
-      </Card>
+      <>
+        <Card className="w-full p-3 py-6">
+          <p className="text-center text-sm text-neutral-500 dark:text-neutral-400">
+            <span className="font-bold">
+              You're not the owner of any tokens in this collection.
+            </span>{" "}
+            <br />
+            Please select another collection or connect to a different wallet.
+          </p>
+        </Card>
+      </>
     )
+  }
 
   return (
     <div

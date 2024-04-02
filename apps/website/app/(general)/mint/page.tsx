@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { FormMintERC721 } from "@/components/form-mint-erc721"
+import { FormMintERC721 } from "@/components/forms/form-mint-erc721"
 
 export default function MintPage() {
   return (

@@ -51,9 +51,9 @@ import { ContractWriteButton } from "@/components/blockchain/contract-write-butt
 import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
 import { TransactionStatus } from "@/components/blockchain/transaction-status"
 
-import { BlockExplorerLink } from "./blockchain/block-explorer-link"
-import { LinkComponent } from "./shared/link-component"
-import { Card } from "./ui/card"
+import { BlockExplorerLink } from "../blockchain/block-explorer-link"
+import { LinkComponent } from "../shared/link-component"
+import { Card } from "../ui/card"
 
 const formSchema = z.object({
   remoteToken: z.string().min(1, "Remote Token is required"),
@@ -80,7 +80,7 @@ export const FormCreateL2ERC721 = ({
   )
   const watchName = useDebounce(form.watch("name"), 500)
   const watchSymbol = useDebounce(form.watch("symbol"), 500)
-  const watchL2ChainId = useDebounce(form.watch("l2ChainId"), 500)
+  const watchL2ChainId = form.watch("l2ChainId")
 
   const { appMode } = useAppMode()
 

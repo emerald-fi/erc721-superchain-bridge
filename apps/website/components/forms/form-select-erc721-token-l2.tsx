@@ -2,7 +2,7 @@
 
 import { HTMLAttributes, useEffect, useMemo } from "react"
 import Image from "next/image"
-import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
+import { l2NetworksOptions } from "@/data/networks/options"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { type Address } from "viem"
@@ -34,9 +34,12 @@ import { Erc721CollectionSelector } from "@/components/blockchain/erc721/erc721-
 import { Erc721TokenIdSelector } from "@/components/blockchain/erc721/erc721-token-id-selector"
 
 const formSchema = z.object({
+  remoteToken: z.string().optional(),
   localToken: z.string().min(1, "Local Token is required"),
   tokenId: z.string().min(1, "TokenID is required"),
   sourceNetwork: z.string().min(1, "Source Network is required"),
+  name: z.string().optional(),
+  logoURI: z.string().optional(),
 })
 
 // Type for form data
@@ -44,7 +47,13 @@ type FormData = z.infer<typeof formSchema>
 
 interface FormSelectErc721TokenL2Props extends HTMLAttributes<HTMLFormElement> {
   appMode: AppMode
-  onTokenSelected?: (data: FormData) => void
+  onTokenSelected?: (
+    data: FormData & {
+      remoteToken: string
+      name: string
+      logoURI: string
+    }
+  ) => void
 }
 
 export function FormSelectErc721TokenL2({
@@ -82,8 +91,11 @@ export function FormSelectErc721TokenL2({
         contractAddressesList.push(tokenAddress as Address)
       }
     })
-    return contractAddressesList
-  }, [tokenList, watchSourceNetwork])
+
+    if (!watchLocalToken || watchLocalToken === "") return contractAddressesList
+
+    return [watchLocalToken as Address, ...contractAddressesList]
+  }, [tokenList, watchSourceNetwork, watchLocalToken])
 
   const { address } = useAccount()
   const { data: nfts } = useNftsForOwner({
@@ -93,7 +105,18 @@ export function FormSelectErc721TokenL2({
   })
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    onTokenSelected?.(data)
+    const remoteToken = tokenList.tokens.find(
+      ({ address }) => address.toLowerCase() === data.localToken.toLowerCase()
+    )?.extensions?.bridgeInfo?.[data?.sourceNetwork]?.tokenAddress as Address
+
+    onTokenSelected?.({
+      localToken: data.localToken,
+      tokenId: data.tokenId,
+      remoteToken: data.remoteToken ?? remoteToken,
+      sourceNetwork: data.sourceNetwork,
+      name: data.name ?? "",
+      logoURI: data.logoURI ?? "/logo.svg",
+    })
   }
 
   useEffect(() => {
@@ -122,6 +145,9 @@ export function FormSelectErc721TokenL2({
                   field.onChange(value.toString())
                   // Reset selected token and token ID when network changes
                   form.resetField("localToken")
+                  form.resetField("remoteToken")
+                  form.resetField("name")
+                  form.resetField("logoURI")
                   form.resetField("tokenId")
                 }}
               >
@@ -166,18 +192,15 @@ export function FormSelectErc721TokenL2({
                   chainId={Number(watchSourceNetwork)}
                   nfts={nfts}
                   tokenList={filteredTokenList}
-                  selectedTokenIndex={filteredTokenList.tokens.findIndex(
-                    (token) =>
-                      token?.extensions?.bridgeInfo?.[watchSourceNetwork]
-                        ?.tokenAddress === field.value
-                  )}
-                  setSelectedTokenIndex={(index) =>
-                    field.onChange(
-                      filteredTokenList.tokens[index].extensions?.bridgeInfo?.[
-                        watchSourceNetwork
-                      ]?.tokenAddress
-                    )
+                  selectedToken={field.value as Address}
+                  setRemoteToken={(remoteToken) =>
+                    form.setValue("remoteToken", remoteToken)
                   }
+                  setTokenMetadata={({ logoURI, name }) => {
+                    form.setValue("logoURI", logoURI)
+                    form.setValue("name", name)
+                  }}
+                  setSelectedToken={(token) => field.onChange(token)}
                 />
                 <FormMessage />
               </FormItem>

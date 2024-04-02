@@ -207,9 +207,34 @@ export type AllOptimismMintableErc721QueryQuery = {
   }
 }
 
+export type GetOtimismMintableErc721ByLocalTokenQueryQueryVariables = Exact<{
+  localToken: Scalars["String"]["input"]
+  chainId?: InputMaybe<Scalars["Int"]["input"]>
+}>
+
+export type GetOtimismMintableErc721ByLocalTokenQueryQuery = {
+  __typename?: "Query"
+  optimismMintableERC721s: {
+    __typename?: "OptimismMintableERC721Page"
+    items: Array<{
+      __typename?: "OptimismMintableERC721"
+      id: string
+      chainId: number
+      blockNumber: any
+      localToken: string
+      localName?: string | null
+      localSymbol?: string | null
+      remoteToken: string
+      remoteName?: string | null
+      remoteSymbol?: string | null
+      deployer: string
+    }>
+  }
+}
+
 export type GetOtimismMintableErc721ByRemoteTokenQueryQueryVariables = Exact<{
   remoteToken: Scalars["String"]["input"]
-  chainId: Scalars["Int"]["input"]
+  chainId?: InputMaybe<Scalars["Int"]["input"]>
 }>
 
 export type GetOtimismMintableErc721ByRemoteTokenQueryQuery = {
@@ -325,6 +350,133 @@ export const AllOptimismMintableErc721QueryDocument = {
   AllOptimismMintableErc721QueryQuery,
   AllOptimismMintableErc721QueryQueryVariables
 >
+export const GetOtimismMintableErc721ByLocalTokenQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: {
+        kind: "Name",
+        value: "getOtimismMintableERC721ByLocalTokenQuery",
+      },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "localToken" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "chainId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "optimismMintableERC721s" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "localToken" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "localToken" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "chainId" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "chainId" },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "items" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "chainId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "blockNumber" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "localToken" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "localName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "localSymbol" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remoteToken" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remoteName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remoteSymbol" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "deployer" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetOtimismMintableErc721ByLocalTokenQueryQuery,
+  GetOtimismMintableErc721ByLocalTokenQueryQueryVariables
+>
 export const GetOtimismMintableErc721ByRemoteTokenQueryDocument = {
   kind: "Document",
   definitions: [
@@ -356,10 +508,7 @@ export const GetOtimismMintableErc721ByRemoteTokenQueryDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "chainId" },
           },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
       ],
       selectionSet: {

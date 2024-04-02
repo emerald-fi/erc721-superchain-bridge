@@ -20,12 +20,18 @@ import { LinkComponent } from "@/components/shared/link-component"
 export default function HomePage() {
   const [selectedTokenL1, setSelectedTokenL1] = useState<{
     localToken: string
+    remoteToken: string
     tokenId: string
+    name: string
+    logoURI: string
     destinationNetwork: string
   }>()
   const [selectedTokenL2, setSelectedTokenL2] = useState<{
     localToken: string
+    remoteToken: string
     tokenId: string
+    name: string
+    logoURI: string
     sourceNetwork: string
   }>()
 
@@ -87,16 +93,9 @@ export default function HomePage() {
                     appMode={appMode}
                     localToken={selectedTokenL1.localToken as Address}
                     tokenId={selectedTokenL1.tokenId}
-                    destinationNetwork={selectedTokenL1?.destinationNetwork}
-                    remoteToken={
-                      tokenList.tokens.find(
-                        ({ address }) =>
-                          address.toLowerCase() ===
-                          selectedTokenL1.localToken.toLowerCase()
-                      )?.extensions?.bridgeInfo?.[
-                        selectedTokenL1?.destinationNetwork
-                      ]?.tokenAddress as Address
-                    }
+                    remoteToken={selectedTokenL1.remoteToken as Address}
+                    name={selectedTokenL1.name}
+                    logoURI={selectedTokenL1.logoURI}
                     l2ChainId={Number(selectedTokenL1?.destinationNetwork)}
                     l1ERC721BridgeAddress={
                       l2NetworksOptions[appMode][
@@ -128,15 +127,9 @@ export default function HomePage() {
                     localToken={selectedTokenL2.localToken as Address}
                     tokenId={selectedTokenL2.tokenId}
                     sourceNetwork={selectedTokenL2?.sourceNetwork}
-                    remoteToken={
-                      tokenList.tokens.find(
-                        (token) =>
-                          token?.extensions?.bridgeInfo?.[
-                            selectedTokenL2.sourceNetwork
-                          ]?.tokenAddress.toLowerCase() ===
-                          selectedTokenL2.localToken.toLowerCase()
-                      )?.address as Address
-                    }
+                    remoteToken={selectedTokenL2.remoteToken as Address}
+                    name={selectedTokenL2.name}
+                    logoURI={selectedTokenL2.logoURI}
                     l2ERC721BridgeAddress={
                       l2NetworksOptions[appMode][
                         Number(selectedTokenL2?.sourceNetwork)
