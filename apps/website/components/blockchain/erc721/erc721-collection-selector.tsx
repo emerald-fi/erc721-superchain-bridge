@@ -243,7 +243,7 @@ export function Erc721CollectionSelector({
             <span className="font-bold">
               Don't see an NFT collection you want to bridge?
             </span>{" "}
-            <br /> Try searching using the mainnet address or{" "}
+            <br /> Try searching using the collection address or{" "}
             <LinkComponent className="link font-bold" href="/documentation">
               learn how to add a new collection
             </LinkComponent>

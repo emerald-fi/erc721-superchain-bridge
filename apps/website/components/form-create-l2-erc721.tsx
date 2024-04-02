@@ -120,8 +120,6 @@ export const FormCreateL2ERC721 = ({
       },
     })
 
-  getOtimismMintableERC721ByRemoteTokenQuery.data
-
   const { address, chainId: currentChainId } = useAccount()
   const erc721NameRead = useReadErc721Name({
     chainId: l1Chain.chainId,
@@ -240,8 +238,11 @@ export const FormCreateL2ERC721 = ({
           getOtimismMintableERC721ByRemoteTokenQuery.data
             ?.optimismMintableERC721s?.items?.length > 0 && (
             <div className="flex flex-col gap-y-2">
-              <p className="text-sm font-medium text-red-500">
-                This NFT has already been bridged to the L2 network.
+              <p className="text-center text-sm font-medium text-red-500">
+                The NFT collection has already been synced with{" "}
+                {l2NetworksOptions[appMode][currentChainId].name}. If the token
+                is not in the Emerald Superchain NFT token list, please contact
+                the collection creator to have it added.
               </p>
               <Card className="max-h-[200px] overflow-y-auto break-words p-4">
                 {getOtimismMintableERC721ByRemoteTokenQuery.data?.optimismMintableERC721s?.items?.map(
@@ -331,27 +332,27 @@ const NFTAddressFromTransactionReceipt = ({
   if (!localToken) return null
 
   return (
-    <Card className="mt-4 p-3 text-xs">
+    <Card className="mt-4 p-3 text-sm">
       <p className="mb-2">
-        <span className="font-bold">Congratulations!</span> The L2 NFT has been
+        <span className="font-bold">Success!</span> The L2 NFT has been
         successfully created.
       </p>
       <div className="mb-2">
         <BlockExplorerLink
           address={localToken}
-          className="font-bold text-blue-700 no-underline underline-offset-2 hover:underline"
+          className="link font-bold no-underline underline-offset-2 hover:underline"
         >
           {localToken}
         </BlockExplorerLink>
       </div>
       <p className="mb-2">
         Please review the{" "}
-        <LinkComponent className="link" href="/documentation">
+        <LinkComponent className="link font-bold" href="/documentation">
           documentation
         </LinkComponent>{" "}
-        to learn how a collection can listed and verified in the{" "}
+        to learn how a collection can listed/verified in the{" "}
         <LinkComponent
-          className="link"
+          className="link font-bold"
           href="https://github.com/emerald-fi/erc721-superchain-bridge/blob/main/packages/token-list/src/default-token-list.json"
         >
           Emerald Superchain NFT token list

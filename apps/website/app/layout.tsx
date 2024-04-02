@@ -19,7 +19,9 @@ export const metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  themeColor: "#feefc4",
+  visualViewport: {
+    themeColor: "#feefc4",
+  },
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
