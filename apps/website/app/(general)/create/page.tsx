@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { FormCreateL2ERC721 } from "@/components/form-create-l2-erc721"
+import { FormCreateL2ERC721 } from "@/components/forms/form-create-l2-erc721"
 import { LinkComponent } from "@/components/shared/link-component"
 
 export default function CreatePage() {

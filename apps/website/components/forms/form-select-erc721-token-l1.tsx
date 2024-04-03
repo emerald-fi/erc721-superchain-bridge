@@ -34,9 +34,13 @@ import { Erc721CollectionSelector } from "@/components/blockchain/erc721/erc721-
 import { Erc721TokenIdSelector } from "@/components/blockchain/erc721/erc721-token-id-selector"
 
 const formSchema = z.object({
+  remoteToken: z.string().optional(),
   localToken: z.string().min(1, "Local Token is required"),
   tokenId: z.string().min(1, "TokenID is required"),
   destinationNetwork: z.string().min(1, "Destination Network is required"),
+  overrideDestinationNetwork: z.string().optional(),
+  name: z.string().optional(),
+  logoURI: z.string().optional(),
 })
 
 // Type for form data
@@ -44,7 +48,13 @@ type FormData = z.infer<typeof formSchema>
 
 interface FormSelectErc721TokenL1Props extends HTMLAttributes<HTMLFormElement> {
   appMode: AppMode
-  onTokenSelected?: (data: FormData) => void
+  onTokenSelected?: (
+    data: FormData & {
+      remoteToken: string
+      name: string
+      logoURI: string
+    }
+  ) => void
 }
 
 export function FormSelectErc721TokenL1({
@@ -56,14 +66,20 @@ export function FormSelectErc721TokenL1({
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   })
-
   const watchLocalToken = form.watch("localToken")
+  const watchOverrideDestinationNetwork = form.watch(
+    "overrideDestinationNetwork"
+  )
 
   const tokenList = useTokenList()
-  const contractAddresses = useMemo(
-    () => tokenList.tokens.map((token) => token.address as Address),
-    [tokenList]
-  )
+  const contractAddresses = useMemo(() => {
+    const tokenListTokens = tokenList.tokens.map(
+      (token) => token.address as Address
+    )
+    if (!watchLocalToken || watchLocalToken === "") return tokenListTokens
+
+    return [watchLocalToken as Address, ...tokenListTokens]
+  }, [tokenList, watchLocalToken])
 
   const { address } = useAccount()
   const { data: nfts } = useNftsForOwner({
@@ -73,7 +89,18 @@ export function FormSelectErc721TokenL1({
   })
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    onTokenSelected?.(data)
+    const remoteToken = tokenList.tokens.find(
+      ({ address }) => address.toLowerCase() === data.localToken.toLowerCase()
+    )?.extensions?.bridgeInfo?.[data?.destinationNetwork]
+      ?.tokenAddress as Address
+    onTokenSelected?.({
+      destinationNetwork: data.destinationNetwork,
+      remoteToken: data.remoteToken ?? remoteToken,
+      localToken: data.localToken,
+      tokenId: data.tokenId,
+      name: data.name ?? "",
+      logoURI: data.logoURI ?? "/logo.svg",
+    })
   }
 
   useEffect(() => {
@@ -104,12 +131,18 @@ export function FormSelectErc721TokenL1({
                 chainId={l1NetworkOptions[appMode].chainId}
                 nfts={nfts}
                 tokenList={tokenList}
-                selectedTokenIndex={tokenList.tokens.findIndex(
-                  (token) => token.address === field.value
-                )}
-                setSelectedTokenIndex={(index) =>
-                  field.onChange(tokenList.tokens[index].address)
+                selectedToken={field.value as Address}
+                setRemoteToken={(remoteToken) =>
+                  form.setValue("remoteToken", remoteToken)
                 }
+                setDestinationNetwork={(network) =>
+                  form.setValue("overrideDestinationNetwork", network)
+                }
+                setTokenMetadata={({ logoURI, name }) => {
+                  form.setValue("logoURI", logoURI)
+                  form.setValue("name", name)
+                }}
+                setSelectedToken={(token) => field.onChange(token)}
               />
               <FormMessage />
             </FormItem>
@@ -151,14 +184,20 @@ export function FormSelectErc721TokenL1({
                   <SelectContent>
                     {Object.values(l2NetworksOptions[appMode])
                       // Only show network options where the NFT is brigded
-                      .filter(
-                        ({ chainId }) =>
+                      .filter(({ chainId }) => {
+                        if (watchOverrideDestinationNetwork) {
+                          return (
+                            chainId === Number(watchOverrideDestinationNetwork)
+                          )
+                        }
+                        return (
                           tokenList.tokens.find(
                             ({ address }) =>
                               address.toLowerCase() ===
                               watchLocalToken?.toLowerCase()
                           )?.extensions?.bridgeInfo?.[chainId] !== undefined
-                      )
+                        )
+                      })
                       .map(({ chainId, logoUrl, name }) => (
                         <SelectItem key={chainId} value={chainId.toString()}>
                           <div className="flex w-full cursor-pointer flex-row items-center gap-x-2.5 py-2">

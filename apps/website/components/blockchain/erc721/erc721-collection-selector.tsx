@@ -3,7 +3,10 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import { l2NetworksOptions } from "@/data/networks/options"
+import { Address, checksumAddress, isAddress } from "viem"
 
+import { useGetOtimismMintableERC721ByLocalTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-local-token"
+import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
 import { type Nft } from "@/lib/hooks/web3/use-nfts-for-owner"
 import { AppMode } from "@/lib/state/app-mode"
 import { cn } from "@/lib/utils"
@@ -29,8 +32,11 @@ interface Erc721CollectionSelectorProps {
   appMode: AppMode
   disabled?: boolean
   className?: string
-  selectedTokenIndex: number | undefined
-  setSelectedTokenIndex: (index: number) => void
+  selectedToken: Address | undefined
+  setSelectedToken: (token: Address) => void
+  setDestinationNetwork?: (network: string | undefined) => void
+  setRemoteToken?: (remoteToken: Address | undefined) => void
+  setTokenMetadata?: (metadata: { name?: string; logoURI?: string }) => void
   tokenList: TokenList
   nfts: Nft[] | undefined | null
 }
@@ -43,11 +49,41 @@ export function Erc721CollectionSelector({
   className,
   nfts,
   tokenList,
-  selectedTokenIndex,
-  setSelectedTokenIndex,
+  selectedToken,
+  setSelectedToken,
+  setDestinationNetwork,
+  setRemoteToken,
+  setTokenMetadata,
 }: Erc721CollectionSelectorProps) {
   const [open, setOpen] = useState(false)
+  const [selectedUnlistedToken, setSelectedUnlistedToken] = useState<
+    Address | undefined
+  >()
   const [searchValue, setSearchValue] = useState("")
+
+  const getOtimismMintableERC721ByRemoteTokenQuery =
+    useGetOtimismMintableERC721ByRemoteTokenQuery({
+      remoteToken: isAddress(selectedUnlistedToken ?? searchValue)
+        ? checksumAddress(selectedUnlistedToken ?? (searchValue as Address))
+        : "0x0",
+      query: {
+        enabled:
+          Boolean(chainType === "L1") &&
+          (isAddress(searchValue) || Boolean(selectedUnlistedToken)),
+      },
+    })
+
+  const getOtimismMintableERC721ByLocalTokenQuery =
+    useGetOtimismMintableERC721ByLocalTokenQuery({
+      localToken: isAddress(selectedUnlistedToken ?? searchValue)
+        ? checksumAddress(selectedUnlistedToken ?? (searchValue as Address))
+        : "0x0",
+      query: {
+        enabled:
+          Boolean(chainType === "L2") &&
+          (isAddress(searchValue) || Boolean(selectedUnlistedToken)),
+      },
+    })
 
   const filteredTokenList = useMemo(() => {
     if (tokenList?.tokens && tokenList.tokens.length > 0) {
@@ -89,27 +125,66 @@ export function Erc721CollectionSelector({
     } else {
       return [] as Array<Token & { nftCount: number }>
     }
-  }, [tokenList.tokens, searchValue, nfts])
+  }, [tokenList.tokens, searchValue, nfts, selectedToken])
 
-  const handleSelect = (index: number) => {
-    setSelectedTokenIndex(index)
+  const handleSelect = (token: Address) => {
+    setSelectedToken(token)
     setOpen(false)
     setSearchValue("")
   }
 
-  const tokenAddress = useMemo(() => {
-    if (!selectedTokenIndex) return
-
+  const selectedTokenData = useMemo(() => {
     if (chainType === "L1") {
-      return tokenList.tokens[selectedTokenIndex]?.address
-    }
+      if (selectedUnlistedToken) {
+        const token =
+          getOtimismMintableERC721ByRemoteTokenQuery?.data?.optimismMintableERC721s.items.find(
+            (item) =>
+              item.remoteToken.toLowerCase() === selectedToken?.toLowerCase()
+          )
+        if (!token) return
 
-    if (chainType === "L2") {
-      return tokenList.tokens[selectedTokenIndex]?.extensions?.bridgeInfo?.[
-        chainId
-      ]?.tokenAddress
+        return {
+          name: token.remoteName,
+          logoURI: "/logo.svg",
+          address: token.remoteToken,
+        }
+      }
+
+      return tokenList.tokens.find(
+        (token) => token.address.toLowerCase() === selectedToken?.toLowerCase()
+      )
     }
-  }, [selectedTokenIndex, chainType, tokenList.tokens])
+    if (chainType === "L2") {
+      if (selectedUnlistedToken) {
+        const token =
+          getOtimismMintableERC721ByLocalTokenQuery?.data?.optimismMintableERC721s.items.find(
+            (item) =>
+              item.localToken.toLowerCase() === selectedToken?.toLowerCase()
+          )
+        if (!token) return
+
+        return {
+          name: token.remoteName,
+          logoURI: "/logo.svg",
+          address: token.remoteToken,
+        }
+      }
+
+      return tokenList.tokens.find(
+        (token) =>
+          token.extensions?.bridgeInfo?.[
+            chainId
+          ]?.tokenAddress?.toLowerCase() === selectedToken?.toLowerCase()
+      )
+    }
+  }, [
+    selectedToken,
+    chainType,
+    tokenList.tokens,
+    getOtimismMintableERC721ByRemoteTokenQuery.data,
+    getOtimismMintableERC721ByLocalTokenQuery.data,
+    selectedUnlistedToken,
+  ])
 
   return (
     <>
@@ -121,27 +196,28 @@ export function Erc721CollectionSelector({
         className={(cn("w-fit rounded-full"), className)}
         onClick={() => (!disabled ? setOpen(true) : undefined)}
       >
-        {selectedTokenIndex !== undefined && selectedTokenIndex >= 0 && (
+        {selectedToken !== undefined && (
           <div className="flex items-center gap-x-2">
             <ImageIpfs
-              alt={`${tokenList.tokens[selectedTokenIndex].name} logo`}
+              alt={`${selectedTokenData?.name || ""} logo`}
               className="h-12 w-12 rounded-md"
-              src={tokenList.tokens[selectedTokenIndex].logoURI}
+              src={selectedTokenData?.logoURI ?? "/logo.svg"}
             />
             <div className="gap-y-2">
               <h3 className="text-left text-lg font-semibold">
-                {tokenList.tokens[selectedTokenIndex].name}
+                {selectedTokenData?.name}
               </h3>
-              <p className="text-xs text-muted-foreground">{tokenAddress}</p>
+              <p className="text-xs text-muted-foreground">
+                {selectedTokenData?.address}
+              </p>
             </div>
           </div>
         )}
-        {selectedTokenIndex === undefined ||
-          (selectedTokenIndex === -1 && (
-            <span className="mx-auto text-center text-base font-medium">
-              Select NFT Collection
-            </span>
-          ))}
+        {selectedToken === undefined && (
+          <span className="mx-auto text-center text-base font-medium">
+            Select NFT Collection
+          </span>
+        )}
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-[550px] overflow-hidden p-0 pb-4 shadow-lg">
@@ -173,18 +249,22 @@ export function Erc721CollectionSelector({
                       key={token.address}
                       value={tokenAddress}
                       className={cn("flex cursor-pointer gap-x-2.5 py-2")}
-                      onSelect={() =>
-                        handleSelect(
-                          tokenList.tokens.findIndex((t) =>
-                            chainType === "L1"
-                              ? t.address === token.address
-                              : t.extensions?.bridgeInfo?.[chainId]
-                                  ?.tokenAddress ===
-                                token.extensions?.bridgeInfo?.[chainId]
-                                  ?.tokenAddress
-                          )
-                        )
-                      }
+                      onSelect={() => {
+                        const tokenAddress = (
+                          chainType === "L1"
+                            ? token.address
+                            : token.extensions?.bridgeInfo?.[chainId]
+                                ?.tokenAddress
+                        ) as Address
+                        handleSelect(tokenAddress)
+                        setSelectedUnlistedToken(undefined)
+                        setDestinationNetwork?.(undefined)
+                        setRemoteToken?.(undefined)
+                        setTokenMetadata?.({
+                          logoURI: selectedTokenData?.logoURI,
+                          name: selectedTokenData?.name ?? undefined,
+                        })
+                      }}
                     >
                       <ImageIpfs
                         alt={`${token.name} logo`}
@@ -236,6 +316,130 @@ export function Erc721CollectionSelector({
                     </CommandItem>
                   )
                 })}
+              {chainType === "L1"
+                ? getOtimismMintableERC721ByRemoteTokenQuery.data && (
+                    <div>
+                      {getOtimismMintableERC721ByRemoteTokenQuery.data.optimismMintableERC721s.items.map(
+                        (item) => (
+                          <CommandItem
+                            key={item.remoteToken}
+                            value={item.remoteToken}
+                            className={cn("flex cursor-pointer gap-x-2.5 py-2")}
+                            onSelect={() => {
+                              handleSelect(item.remoteToken as Address)
+                              setSelectedUnlistedToken(
+                                item.remoteToken as Address
+                              )
+                              setDestinationNetwork?.(item.chainId.toString())
+                              setRemoteToken?.(item.localToken as Address)
+                              setTokenMetadata?.({
+                                logoURI: "/logo.svg",
+                                name:
+                                  item.localName ??
+                                  item.remoteName ??
+                                  undefined,
+                              })
+                            }}
+                          >
+                            <ImageIpfs
+                              alt={`logo`}
+                              className="h-12 w-12 rounded-md"
+                              src="/logo.svg"
+                            />
+                            <div className="flex w-full items-center justify-between pr-3">
+                              <div>
+                                <h3 className="text-lg font-semibold">
+                                  {item.remoteName ?? item.localName}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                  L2: {item.localToken}
+                                </p>
+                              </div>
+                              <div className="flex flex-col items-center gap-y-1.5">
+                                <div className="flex gap-x-1">
+                                  <Image
+                                    className="even:-ml-3"
+                                    src={
+                                      l2NetworksOptions[appMode][
+                                        Number(item.chainId)
+                                      ]?.logoUrl || ""
+                                    }
+                                    width={24}
+                                    height={24}
+                                    alt="chain logo"
+                                  />
+                                </div>
+                                <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+                                  Unlisted
+                                </p>
+                              </div>
+                            </div>
+                          </CommandItem>
+                        )
+                      )}
+                    </div>
+                  )
+                : getOtimismMintableERC721ByLocalTokenQuery.data && (
+                    <div>
+                      {getOtimismMintableERC721ByLocalTokenQuery.data.optimismMintableERC721s.items.map(
+                        (item) => (
+                          <CommandItem
+                            key={item.remoteToken}
+                            value={item.remoteToken}
+                            className={cn("flex cursor-pointer gap-x-2.5 py-2")}
+                            onSelect={() => {
+                              handleSelect(item.localToken as Address)
+                              setSelectedUnlistedToken(
+                                item.localToken as Address
+                              )
+                              setRemoteToken?.(item.remoteToken as Address)
+                              setTokenMetadata?.({
+                                logoURI: "/logo.svg",
+                                name:
+                                  item.localName ??
+                                  item.remoteName ??
+                                  undefined,
+                              })
+                            }}
+                          >
+                            <ImageIpfs
+                              alt={`logo`}
+                              className="h-12 w-12 rounded-md"
+                              src="/logo.svg"
+                            />
+                            <div className="flex w-full items-center justify-between pr-3">
+                              <div>
+                                <h3 className="text-lg font-semibold">
+                                  {item.remoteName ?? item.localName}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                  {item.localToken}
+                                </p>
+                              </div>
+                              <div className="flex flex-col items-center gap-y-1.5">
+                                <div className="flex gap-x-1">
+                                  <Image
+                                    className="even:-ml-3"
+                                    src={
+                                      l2NetworksOptions[appMode][
+                                        Number(item.chainId)
+                                      ]?.logoUrl || ""
+                                    }
+                                    width={24}
+                                    height={24}
+                                    alt="chain logo"
+                                  />
+                                </div>
+                                <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+                                  Unlisted
+                                </p>
+                              </div>
+                            </div>
+                          </CommandItem>
+                        )
+                      )}
+                    </div>
+                  )}
             </CommandList>
           </Command>
           <hr className="border-t border-neutral-200 dark:border-neutral-700" />
