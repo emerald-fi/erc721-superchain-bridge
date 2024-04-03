@@ -75,12 +75,14 @@ export function Erc721CollectionSelector({
 
   const getOtimismMintableERC721ByLocalTokenQuery =
     useGetOtimismMintableERC721ByLocalTokenQuery({
+      chainId,
       localToken: isAddress(selectedUnlistedToken ?? searchValue)
         ? checksumAddress(selectedUnlistedToken ?? (searchValue as Address))
         : "0x0",
       query: {
         enabled:
           Boolean(chainType === "L2") &&
+          Boolean(chainId) &&
           (isAddress(searchValue) || Boolean(selectedUnlistedToken)),
       },
     })
@@ -259,7 +261,7 @@ export function Erc721CollectionSelector({
                         handleSelect(tokenAddress)
                         setSelectedUnlistedToken(undefined)
                         setDestinationNetwork?.(undefined)
-                        setRemoteToken?.(undefined)
+                        setRemoteToken?.(token.address as Address)
                         setTokenMetadata?.({
                           logoURI: selectedTokenData?.logoURI,
                           name: selectedTokenData?.name ?? undefined,
