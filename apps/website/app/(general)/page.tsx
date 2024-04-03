@@ -5,7 +5,6 @@ import { l2NetworksOptions } from "@/data/networks/options"
 import { LuBadgePlus, LuGanttChart, LuPalette } from "react-icons/lu"
 import { type Address } from "viem"
 
-import { useTokenList } from "@/lib/hooks/use-token-list"
 import { useAppMode } from "@/lib/state/app-mode"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -36,7 +35,6 @@ export default function HomePage() {
   }>()
 
   const { appMode } = useAppMode()
-  const tokenList = useTokenList()
 
   // If the app mode changes, reset the selected token
   useEffect(() => {

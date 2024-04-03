@@ -105,14 +105,10 @@ export function FormSelectErc721TokenL2({
   })
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    const remoteToken = tokenList.tokens.find(
-      ({ address }) => address.toLowerCase() === data.localToken.toLowerCase()
-    )?.extensions?.bridgeInfo?.[data?.sourceNetwork]?.tokenAddress as Address
-
     onTokenSelected?.({
       localToken: data.localToken,
       tokenId: data.tokenId,
-      remoteToken: data.remoteToken ?? remoteToken,
+      remoteToken: data.remoteToken ?? "",
       sourceNetwork: data.sourceNetwork,
       name: data.name ?? "",
       logoURI: data.logoURI ?? "/logo.svg",
