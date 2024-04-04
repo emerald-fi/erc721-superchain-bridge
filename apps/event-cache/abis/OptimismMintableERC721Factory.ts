@@ -1,4 +1,4 @@
-export const OptimismMintableERC721Factory = [
+export const OptimismMintableERC721FactoryAbi = [
   {
     inputs: [
       {

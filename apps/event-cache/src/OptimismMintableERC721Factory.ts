@@ -1,25 +1,6 @@
 import { ponder } from "@/generated";
-import { createPublicClient, erc721Abi, http } from 'viem';
-import { mainnet, sepolia } from "viem/chains";
-
-
-const mainnetPublicClient = createPublicClient({
-  chain: mainnet,
-  transport: http(process.env.PONDER_RPC_URL_1)
-})
-
-const sepoliaPublicClient = createPublicClient({
-  chain: sepolia,
-  transport: http(process.env.PONDER_RPC_URL_11155111)
-})
-
-function getL1PublicClient(l2chainId: number) {
-  if (l2chainId === 11155420 || l2chainId === 84532) {
-    return sepoliaPublicClient;
-  } else {
-    return mainnetPublicClient;
-  }
-}
+import { erc721Abi } from "viem";
+import { getL1PublicClient } from "../clients";
 
 ponder.on("OptimismMintableERC721Factory:OptimismMintableERC721Created", async ({ event, context }) => {
   const { OptimismMintableERC721 } = context.db;
@@ -90,7 +71,7 @@ ponder.on("OptimismMintableERC721Factory:OptimismMintableERC721Created", async (
 
   const { localName, localSymbol, remoteName, remoteSymbol } = tokenMetadata
   await OptimismMintableERC721.create({
-    id: `${context.network.chainId}:${event.args.localToken}`,
+    id: `${context.network.chainId}:${event.args.localToken}:${event.args.remoteToken}`,
     data: {
       chainId: context.network.chainId,
       blockNumber: event.block.number,
