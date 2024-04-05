@@ -31,6 +31,135 @@ export type Scalars = {
   BigInt: { input: any; output: any }
 }
 
+export type BridgedErc721 = {
+  __typename?: "BridgedErc721"
+  id: Scalars["String"]["output"]
+  l1ChainId: Scalars["Int"]["output"]
+  l1Token: Scalars["String"]["output"]
+  l2ChainId: Scalars["Int"]["output"]
+  l2Token: Scalars["String"]["output"]
+  owner: Scalars["String"]["output"]
+  state: BridgedErc721State
+  timestamp: Scalars["BigInt"]["output"]
+  tokenId: Scalars["String"]["output"]
+  txChainId: Scalars["Int"]["output"]
+  txHash: Scalars["String"]["output"]
+}
+
+export type BridgedErc721Filter = {
+  AND?: InputMaybe<Array<InputMaybe<BridgedErc721Filter>>>
+  OR?: InputMaybe<Array<InputMaybe<BridgedErc721Filter>>>
+  id?: InputMaybe<Scalars["String"]["input"]>
+  id_contains?: InputMaybe<Scalars["String"]["input"]>
+  id_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  id_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  id_not?: InputMaybe<Scalars["String"]["input"]>
+  id_not_contains?: InputMaybe<Scalars["String"]["input"]>
+  id_not_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  id_not_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  id_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  l1ChainId?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId_gt?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId_gte?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId_in?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>
+  l1ChainId_lt?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId_lte?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId_not?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId_not_in?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>
+  l1Token?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_contains?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  l1Token_not?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_not_contains?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_not_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  l1Token_not_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  l1Token_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  l2ChainId?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId_gt?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId_gte?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId_in?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>
+  l2ChainId_lt?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId_lte?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId_not?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId_not_in?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>
+  l2Token?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_contains?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  l2Token_not?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_not_contains?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_not_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  l2Token_not_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  l2Token_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  owner?: InputMaybe<Scalars["String"]["input"]>
+  owner_contains?: InputMaybe<Scalars["String"]["input"]>
+  owner_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  owner_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  owner_not?: InputMaybe<Scalars["String"]["input"]>
+  owner_not_contains?: InputMaybe<Scalars["String"]["input"]>
+  owner_not_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  owner_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  owner_not_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  owner_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  state?: InputMaybe<BridgedErc721State>
+  state_in?: InputMaybe<Array<InputMaybe<BridgedErc721State>>>
+  state_not?: InputMaybe<BridgedErc721State>
+  state_not_in?: InputMaybe<Array<InputMaybe<BridgedErc721State>>>
+  timestamp?: InputMaybe<Scalars["BigInt"]["input"]>
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]["input"]>
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]["input"]>
+  timestamp_in?: InputMaybe<Array<InputMaybe<Scalars["BigInt"]["input"]>>>
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]["input"]>
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]["input"]>
+  timestamp_not?: InputMaybe<Scalars["BigInt"]["input"]>
+  timestamp_not_in?: InputMaybe<Array<InputMaybe<Scalars["BigInt"]["input"]>>>
+  tokenId?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_contains?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  tokenId_not?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_not_contains?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_not_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  tokenId_not_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  tokenId_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  txChainId?: InputMaybe<Scalars["Int"]["input"]>
+  txChainId_gt?: InputMaybe<Scalars["Int"]["input"]>
+  txChainId_gte?: InputMaybe<Scalars["Int"]["input"]>
+  txChainId_in?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>
+  txChainId_lt?: InputMaybe<Scalars["Int"]["input"]>
+  txChainId_lte?: InputMaybe<Scalars["Int"]["input"]>
+  txChainId_not?: InputMaybe<Scalars["Int"]["input"]>
+  txChainId_not_in?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>
+  txHash?: InputMaybe<Scalars["String"]["input"]>
+  txHash_contains?: InputMaybe<Scalars["String"]["input"]>
+  txHash_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  txHash_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  txHash_not?: InputMaybe<Scalars["String"]["input"]>
+  txHash_not_contains?: InputMaybe<Scalars["String"]["input"]>
+  txHash_not_ends_with?: InputMaybe<Scalars["String"]["input"]>
+  txHash_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>
+  txHash_not_starts_with?: InputMaybe<Scalars["String"]["input"]>
+  txHash_starts_with?: InputMaybe<Scalars["String"]["input"]>
+}
+
+export type BridgedErc721Page = {
+  __typename?: "BridgedErc721Page"
+  items: Array<BridgedErc721>
+  pageInfo: PageInfo
+}
+
+export enum BridgedErc721State {
+  L1 = "L1",
+  L2 = "L2",
+  PendingToL1 = "PENDING_TO_L1",
+  PendingToL2 = "PENDING_TO_L2",
+}
+
 export type OptimismMintableErc721 = {
   __typename?: "OptimismMintableERC721"
   blockNumber: Scalars["BigInt"]["output"]
@@ -164,8 +293,25 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: "Query"
+  bridgedErc721?: Maybe<BridgedErc721>
+  bridgedErc721s: BridgedErc721Page
   optimismMintableERC721?: Maybe<OptimismMintableErc721>
   optimismMintableERC721s: OptimismMintableErc721Page
+}
+
+export type QueryBridgedErc721Args = {
+  id: Scalars["String"]["input"]
+  timestamp?: InputMaybe<Scalars["Int"]["input"]>
+}
+
+export type QueryBridgedErc721sArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>
+  before?: InputMaybe<Scalars["String"]["input"]>
+  limit?: InputMaybe<Scalars["Int"]["input"]>
+  orderBy?: InputMaybe<Scalars["String"]["input"]>
+  orderDirection?: InputMaybe<Scalars["String"]["input"]>
+  timestamp?: InputMaybe<Scalars["Int"]["input"]>
+  where?: InputMaybe<BridgedErc721Filter>
 }
 
 export type QueryOptimismMintableErc721Args = {
@@ -203,6 +349,35 @@ export type AllOptimismMintableErc721QueryQuery = {
       remoteName?: string | null
       remoteSymbol?: string | null
       deployer: string
+    }>
+  }
+}
+
+export type GetBridgedErc721QueryQueryVariables = Exact<{
+  owner?: InputMaybe<Scalars["String"]["input"]>
+  l2chainId?: InputMaybe<Scalars["Int"]["input"]>
+  states?: InputMaybe<
+    Array<InputMaybe<BridgedErc721State>> | InputMaybe<BridgedErc721State>
+  >
+}>
+
+export type GetBridgedErc721QueryQuery = {
+  __typename?: "Query"
+  bridgedErc721s: {
+    __typename?: "BridgedErc721Page"
+    items: Array<{
+      __typename?: "BridgedErc721"
+      id: string
+      state: BridgedErc721State
+      l1ChainId: number
+      l2ChainId: number
+      l1Token: string
+      l2Token: string
+      tokenId: string
+      owner: string
+      txHash: string
+      txChainId: number
+      timestamp: any
     }>
   }
 }
@@ -349,6 +524,158 @@ export const AllOptimismMintableErc721QueryDocument = {
 } as unknown as DocumentNode<
   AllOptimismMintableErc721QueryQuery,
   AllOptimismMintableErc721QueryQueryVariables
+>
+export const GetBridgedErc721QueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBridgedERC721Query" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "owner" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "l2chainId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "states" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "BridgedErc721State" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "bridgedErc721s" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "owner" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "owner" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "l2ChainId" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "l2chainId" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "state_in" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "states" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "StringValue",
+                  value: "timestamp",
+                  block: false,
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderDirection" },
+                value: { kind: "StringValue", value: "desc", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "items" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "state" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "l1ChainId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "l2ChainId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "l1Token" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "l2Token" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "tokenId" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "owner" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "txHash" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "txChainId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBridgedErc721QueryQuery,
+  GetBridgedErc721QueryQueryVariables
 >
 export const GetOtimismMintableErc721ByLocalTokenQueryDocument = {
   kind: "Document",

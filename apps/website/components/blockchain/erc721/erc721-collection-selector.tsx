@@ -5,8 +5,8 @@ import Image from "next/image"
 import { l2NetworksOptions } from "@/data/networks/options"
 import { Address, checksumAddress, isAddress } from "viem"
 
-import { useGetOtimismMintableERC721ByLocalTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-local-token"
-import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
+import { useOtimismMintableERC721ByLocalTokenQuery } from "@/lib/event-cache/hooks/use-optimism-mintable-erc721-by-local-token"
+import { useOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-optimism-mintable-erc721-by-remote-token"
 import { type Nft } from "@/lib/hooks/web3/use-nfts-for-owner"
 import { AppMode } from "@/lib/state/app-mode"
 import { cn } from "@/lib/utils"
@@ -62,7 +62,7 @@ export function Erc721CollectionSelector({
   const [searchValue, setSearchValue] = useState("")
 
   const getOtimismMintableERC721ByRemoteTokenQuery =
-    useGetOtimismMintableERC721ByRemoteTokenQuery({
+    useOtimismMintableERC721ByRemoteTokenQuery({
       remoteToken: isAddress(selectedUnlistedToken ?? searchValue)
         ? checksumAddress(selectedUnlistedToken ?? (searchValue as Address))
         : "0x0",
@@ -74,7 +74,7 @@ export function Erc721CollectionSelector({
     })
 
   const getOtimismMintableERC721ByLocalTokenQuery =
-    useGetOtimismMintableERC721ByLocalTokenQuery({
+    useOtimismMintableERC721ByLocalTokenQuery({
       chainId,
       localToken: isAddress(selectedUnlistedToken ?? searchValue)
         ? checksumAddress(selectedUnlistedToken ?? (searchValue as Address))

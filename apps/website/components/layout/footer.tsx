@@ -74,7 +74,7 @@ export function Footer({ className, ...props }: HTMLAttributes<HTMLElement>) {
           </LinkComponent>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 sm:justify-start">
             {menuItems.map(({ href, title }) => (
-              <LinkComponent key={href} href={href}>
+              <LinkComponent id={title} key={href} href={href}>
                 {title}
               </LinkComponent>
             ))}

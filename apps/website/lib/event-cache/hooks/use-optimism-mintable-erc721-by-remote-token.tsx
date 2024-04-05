@@ -3,13 +3,13 @@ import { Address } from "viem"
 import { graphql } from "../gql"
 import { useGraphQL } from "../use-graphql"
 
-const getOtimismMintableERC721ByLocalTokenQuery = graphql(/* GraphQL */ `
-  query getOtimismMintableERC721ByLocalTokenQuery(
-    $localToken: String!
+const getOtimismMintableERC721ByRemoteTokenQuery = graphql(/* GraphQL */ `
+  query getOtimismMintableERC721ByRemoteTokenQuery(
+    $remoteToken: String!
     $chainId: Int
   ) {
     optimismMintableERC721s(
-      where: { localToken: $localToken, chainId: $chainId }
+      where: { remoteToken: $remoteToken, chainId: $chainId }
     ) {
       items {
         id
@@ -27,18 +27,18 @@ const getOtimismMintableERC721ByLocalTokenQuery = graphql(/* GraphQL */ `
   }
 `)
 
-export function useGetOtimismMintableERC721ByLocalTokenQuery(params: {
-  localToken: Address
+export function useOtimismMintableERC721ByRemoteTokenQuery(params: {
+  remoteToken: Address
   chainId?: number
   query?: { enabled: boolean }
 }) {
   return useGraphQL(
-    getOtimismMintableERC721ByLocalTokenQuery,
+    getOtimismMintableERC721ByRemoteTokenQuery,
     {
       queryKey: [
-        "getOtimismMintableERC721ByLocalToken",
+        "getOtimismMintableERC721ByRemoteToken",
         params.chainId,
-        params.localToken,
+        params.remoteToken,
       ],
       enabled: params.query?.enabled,
     },

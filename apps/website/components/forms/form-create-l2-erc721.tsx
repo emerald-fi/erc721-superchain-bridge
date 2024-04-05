@@ -21,7 +21,7 @@ import {
 } from "wagmi"
 import { z } from "zod"
 
-import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
+import { useOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-optimism-mintable-erc721-by-remote-token"
 import {
   useReadErc721Name,
   useReadErc721Symbol,
@@ -110,7 +110,7 @@ export const FormCreateL2ERC721 = ({
   ]
 
   const getOtimismMintableERC721ByRemoteTokenQuery =
-    useGetOtimismMintableERC721ByRemoteTokenQuery({
+    useOtimismMintableERC721ByRemoteTokenQuery({
       chainId: Number(watchL2ChainId),
       remoteToken: isAddress(watchRemoteToken)
         ? checksumAddress(watchRemoteToken)

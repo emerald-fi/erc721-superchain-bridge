@@ -58,7 +58,6 @@ export function FormL1ToL2Bridge({
   ...props
 }: FormL1ToL2BridgeProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
-
   const l1Chain = l1NetworkOptions[appMode]
   const l2Chains = l2NetworksOptions[appMode]
 
