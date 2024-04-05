@@ -3,7 +3,6 @@ import { z } from "zod"
 
 export const env = createEnv({
   client: {
-    NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
     NEXT_PUBLIC_API_EVENT_CACHE: z.string().url(),
     NEXT_PUBLIC_MAINNET_RPC: z.string().url().optional(),
     NEXT_PUBLIC_BASE_RPC: z.string().url().optional(),
@@ -15,7 +14,6 @@ export const env = createEnv({
     NEXT_PUBLIC_ALCHEMY_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_API_EVENT_CACHE: process.env.NEXT_PUBLIC_API_EVENT_CACHE,
     NEXT_PUBLIC_MAINNET_RPC: process.env.NEXT_PUBLIC_MAINNET_RPC,
     NEXT_PUBLIC_BASE_RPC: process.env.NEXT_PUBLIC_BASE_RPC,
