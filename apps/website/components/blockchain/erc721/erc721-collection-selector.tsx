@@ -252,16 +252,16 @@ export function Erc721CollectionSelector({
                       value={tokenAddress}
                       className={cn("flex cursor-pointer gap-x-2.5 py-2")}
                       onSelect={() => {
-                        const tokenAddress = (
-                          chainType === "L1"
-                            ? token.address
-                            : token.extensions?.bridgeInfo?.[chainId]
-                                ?.tokenAddress
-                        ) as Address
-                        handleSelect(tokenAddress)
+                        const l1Token = token.address as Address
+                        const l2Token = token.extensions?.bridgeInfo?.[chainId]
+                        handleSelect(
+                          (chainType === "L1" ? l1Token : l2Token) as Address
+                        )
                         setSelectedUnlistedToken(undefined)
                         setDestinationNetwork?.(undefined)
-                        setRemoteToken?.(token.address as Address)
+                        setRemoteToken?.(
+                          (chainType === "L1" ? l2Token : l1Token) as Address
+                        )
                         setTokenMetadata?.({
                           logoURI: selectedTokenData?.logoURI,
                           name: selectedTokenData?.name ?? undefined,
