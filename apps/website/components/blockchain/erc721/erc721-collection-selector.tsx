@@ -1,12 +1,15 @@
 "use client"
 
-import { l2NetworksOptions } from "@/data/networks/options"
-import Image from "next/image"
 import { useMemo, useState } from "react"
+import Image from "next/image"
+import { l2NetworksOptions } from "@/data/networks/options"
 import { Address, checksumAddress, isAddress } from "viem"
 
-import { ImageIpfs } from "@/components/blockchain/image-ipfs"
-import { LinkComponent } from "@/components/shared/link-component"
+import { useGetOtimismMintableERC721ByLocalTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-local-token"
+import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
+import { type Nft } from "@/lib/hooks/web3/use-nfts-for-owner"
+import { AppMode } from "@/lib/state/app-mode"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -16,11 +19,8 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { useGetOtimismMintableERC721ByLocalTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-local-token"
-import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
-import { type Nft } from "@/lib/hooks/web3/use-nfts-for-owner"
-import { AppMode } from "@/lib/state/app-mode"
-import { cn } from "@/lib/utils"
+import { ImageIpfs } from "@/components/blockchain/image-ipfs"
+import { LinkComponent } from "@/components/shared/link-component"
 
 import { Token, TokenList } from "./types"
 
@@ -320,128 +320,128 @@ export function Erc721CollectionSelector({
                 })}
               {chainType === "L1"
                 ? getOtimismMintableERC721ByRemoteTokenQuery.data && (
-                  <div>
-                    {getOtimismMintableERC721ByRemoteTokenQuery.data.optimismMintableERC721s.items.map(
-                      (item) => (
-                        <CommandItem
-                          key={item.remoteToken}
-                          value={item.remoteToken}
-                          className={cn("flex cursor-pointer gap-x-2.5 py-2")}
-                          onSelect={() => {
-                            handleSelect(item.remoteToken as Address)
-                            setSelectedUnlistedToken(
-                              item.remoteToken as Address
-                            )
-                            setDestinationNetwork?.(item.chainId.toString())
-                            setRemoteToken?.(item.localToken as Address)
-                            setTokenMetadata?.({
-                              logoURI: "/logo.svg",
-                              name:
-                                item.localName ??
-                                item.remoteName ??
-                                undefined,
-                            })
-                          }}
-                        >
-                          <ImageIpfs
-                            alt={`logo`}
-                            className="h-12 w-12 rounded-md"
-                            src="/logo.svg"
-                          />
-                          <div className="flex w-full items-center justify-between pr-3">
-                            <div>
-                              <h3 className="text-lg font-semibold">
-                                {item.remoteName ?? item.localName}
-                              </h3>
-                              <p className="text-xs text-muted-foreground">
-                                L2: {item.localToken}
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-center gap-y-1.5">
-                              <div className="flex gap-x-1">
-                                <Image
-                                  className="even:-ml-3"
-                                  src={
-                                    l2NetworksOptions[appMode][
-                                      Number(item.chainId)
-                                    ]?.logoUrl || ""
-                                  }
-                                  width={24}
-                                  height={24}
-                                  alt="chain logo"
-                                />
+                    <div>
+                      {getOtimismMintableERC721ByRemoteTokenQuery.data.optimismMintableERC721s.items.map(
+                        (item) => (
+                          <CommandItem
+                            key={item.remoteToken}
+                            value={item.remoteToken}
+                            className={cn("flex cursor-pointer gap-x-2.5 py-2")}
+                            onSelect={() => {
+                              handleSelect(item.remoteToken as Address)
+                              setSelectedUnlistedToken(
+                                item.remoteToken as Address
+                              )
+                              setDestinationNetwork?.(item.chainId.toString())
+                              setRemoteToken?.(item.localToken as Address)
+                              setTokenMetadata?.({
+                                logoURI: "/logo.svg",
+                                name:
+                                  item.localName ??
+                                  item.remoteName ??
+                                  undefined,
+                              })
+                            }}
+                          >
+                            <ImageIpfs
+                              alt={`logo`}
+                              className="h-12 w-12 rounded-md"
+                              src="/logo.svg"
+                            />
+                            <div className="flex w-full items-center justify-between pr-3">
+                              <div>
+                                <h3 className="text-lg font-semibold">
+                                  {item.remoteName ?? item.localName}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                  L2: {item.localToken}
+                                </p>
                               </div>
-                              <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">
-                                Unlisted
-                              </p>
+                              <div className="flex flex-col items-center gap-y-1.5">
+                                <div className="flex gap-x-1">
+                                  <Image
+                                    className="even:-ml-3"
+                                    src={
+                                      l2NetworksOptions[appMode][
+                                        Number(item.chainId)
+                                      ]?.logoUrl || ""
+                                    }
+                                    width={24}
+                                    height={24}
+                                    alt="chain logo"
+                                  />
+                                </div>
+                                <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+                                  Unlisted
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        </CommandItem>
-                      )
-                    )}
-                  </div>
-                )
+                          </CommandItem>
+                        )
+                      )}
+                    </div>
+                  )
                 : getOtimismMintableERC721ByLocalTokenQuery.data && (
-                  <div>
-                    {getOtimismMintableERC721ByLocalTokenQuery.data.optimismMintableERC721s.items.map(
-                      (item) => (
-                        <CommandItem
-                          key={item.remoteToken}
-                          value={item.remoteToken}
-                          className={cn("flex cursor-pointer gap-x-2.5 py-2")}
-                          onSelect={() => {
-                            handleSelect(item.localToken as Address)
-                            setSelectedUnlistedToken(
-                              item.localToken as Address
-                            )
-                            setRemoteToken?.(item.remoteToken as Address)
-                            setTokenMetadata?.({
-                              logoURI: "/logo.svg",
-                              name:
-                                item.localName ??
-                                item.remoteName ??
-                                undefined,
-                            })
-                          }}
-                        >
-                          <ImageIpfs
-                            alt={`logo`}
-                            className="h-12 w-12 rounded-md"
-                            src="/logo.svg"
-                          />
-                          <div className="flex w-full items-center justify-between pr-3">
-                            <div>
-                              <h3 className="text-lg font-semibold">
-                                {item.remoteName ?? item.localName}
-                              </h3>
-                              <p className="text-xs text-muted-foreground">
-                                {item.localToken}
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-center gap-y-1.5">
-                              <div className="flex gap-x-1">
-                                <Image
-                                  className="even:-ml-3"
-                                  src={
-                                    l2NetworksOptions[appMode][
-                                      Number(item.chainId)
-                                    ]?.logoUrl || ""
-                                  }
-                                  width={24}
-                                  height={24}
-                                  alt="chain logo"
-                                />
+                    <div>
+                      {getOtimismMintableERC721ByLocalTokenQuery.data.optimismMintableERC721s.items.map(
+                        (item) => (
+                          <CommandItem
+                            key={item.remoteToken}
+                            value={item.remoteToken}
+                            className={cn("flex cursor-pointer gap-x-2.5 py-2")}
+                            onSelect={() => {
+                              handleSelect(item.localToken as Address)
+                              setSelectedUnlistedToken(
+                                item.localToken as Address
+                              )
+                              setRemoteToken?.(item.remoteToken as Address)
+                              setTokenMetadata?.({
+                                logoURI: "/logo.svg",
+                                name:
+                                  item.localName ??
+                                  item.remoteName ??
+                                  undefined,
+                              })
+                            }}
+                          >
+                            <ImageIpfs
+                              alt={`logo`}
+                              className="h-12 w-12 rounded-md"
+                              src="/logo.svg"
+                            />
+                            <div className="flex w-full items-center justify-between pr-3">
+                              <div>
+                                <h3 className="text-lg font-semibold">
+                                  {item.remoteName ?? item.localName}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                  {item.localToken}
+                                </p>
                               </div>
-                              <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">
-                                Unlisted
-                              </p>
+                              <div className="flex flex-col items-center gap-y-1.5">
+                                <div className="flex gap-x-1">
+                                  <Image
+                                    className="even:-ml-3"
+                                    src={
+                                      l2NetworksOptions[appMode][
+                                        Number(item.chainId)
+                                      ]?.logoUrl || ""
+                                    }
+                                    width={24}
+                                    height={24}
+                                    alt="chain logo"
+                                  />
+                                </div>
+                                <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+                                  Unlisted
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        </CommandItem>
-                      )
-                    )}
-                  </div>
-                )}
+                          </CommandItem>
+                        )
+                      )}
+                    </div>
+                  )}
             </CommandList>
           </Command>
           <hr className="border-t border-neutral-200 dark:border-neutral-700" />
