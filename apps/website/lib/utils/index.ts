@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs"
 import { ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -13,10 +12,6 @@ export function formatDate(input: string | number): string {
     day: "numeric",
     year: "numeric",
   })
-}
-
-export function absoluteUrl(path: string) {
-  return `${env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}${path}`
 }
 
 export function trimFormattedBalance(
