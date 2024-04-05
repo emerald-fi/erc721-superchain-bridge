@@ -15,16 +15,9 @@ import {
 } from "@/lib/event-cache/hooks/use-bridged-erc721"
 import { useTokenList } from "@/lib/hooks/use-token-list"
 import { useAppMode } from "@/lib/state/app-mode"
-import { cn } from "@/lib/utils"
 import { Card } from "@/components/ui/card"
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BlockExplorerLink } from "@/components/blockchain/block-explorer-link"
 import { ConnectButton } from "@/components/blockchain/connect-button"
 
@@ -71,28 +64,27 @@ export default function BridgedCollectionsByChainIdPage({
       <h2 className="px-2 pb-8 pt-4 text-center text-4xl font-black sm:pb-14 sm:text-6xl">
         Your Bridged NFTs
       </h2>
-      <NavigationMenu>
-        <NavigationMenuList className="flex w-full flex-wrap items-center gap-x-14 gap-y-4">
+      <Tabs value={chainId} className="mb-8 mt-12 w-full sm:w-[600px]">
+        <TabsList className="mb-20 w-full flex-wrap gap-2 bg-transparent sm:mb-10">
           {Object.values(l2NetworksOptions[appMode]).map(
             ({ name, chainId: optionChainId }) => (
-              <NavigationMenuItem key={optionChainId}>
-                <Link
-                  href={`/account-history/${optionChainId}`}
-                  legacyBehavior
-                  passHref
+              <Link
+                key={optionChainId}
+                href={`/account-history/${optionChainId}`}
+                legacyBehavior
+                passHref
+              >
+                <TabsTrigger
+                  value={optionChainId.toString()}
+                  className="flex flex-1 items-center justify-center rounded-full py-3 text-lg data-[state=active]:border-2"
                 >
-                  <NavigationMenuLink
-                    active={optionChainId === Number(chainId)}
-                    className={cn(navigationMenuTriggerStyle(), "text-xl")}
-                  >
-                    {name}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+                  {name}
+                </TabsTrigger>
+              </Link>
             )
           )}
-        </NavigationMenuList>
-      </NavigationMenu>
+        </TabsList>
+      </Tabs>
       <div className="flex w-full flex-col gap-y-4 px-4 py-10 sm:px-8">
         {!address ? (
           <div className="mt-20">
