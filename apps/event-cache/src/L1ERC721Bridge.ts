@@ -47,16 +47,13 @@ ponder.on("L1ERC721Bridge:ERC721BridgeInitiated", async ({ event, context }) => 
         l2Token,
         tokenId: tokenId.toString(),
         l2ChainId,
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       },
       update: {
         state: "PENDING_TO_L2",
-        l1ChainId,
-        owner: to,
-        l1Token,
-        l2Token,
-        timestamp,
-        tokenId: tokenId.toString(),
-        l2ChainId,
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       }
     });
   }
@@ -91,19 +88,14 @@ ponder.on("L1ERC721Bridge:ERC721BridgeFinalized", async ({ event, context }) => 
         l2Token,
         tokenId: tokenId.toString(),
         l2ChainId,
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       },
       update: {
         state: "L1",
-        l1ChainId,
-        owner: to,
-        l1Token,
-        l2Token,
-        timestamp,
-        tokenId: tokenId.toString(),
-        l2ChainId,
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       }
     });
   }
-
-
 });

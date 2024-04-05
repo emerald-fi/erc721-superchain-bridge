@@ -1,12 +1,17 @@
 import { ponder } from "@/generated";
-import { base, mainnet, optimism, sepolia } from "viem/chains";
+import { base, baseSepolia, mainnet, optimism, optimismSepolia, sepolia } from "viem/chains";
 
 function getL1ChainId(l2ChainId: number) {
-  if (l2ChainId in [base.id, optimism.id]) {
+  const productionChains: number[] = [base.id, optimism.id]
+  const testnetChains: number[] = [baseSepolia.id, optimismSepolia.id]
+
+  if (productionChains.includes(l2ChainId)) {
     return mainnet.id
   }
-
-  return sepolia.id
+  if (testnetChains.includes(l2ChainId)) {
+    return sepolia.id
+  }
+  throw new Error("Invalid l2 chain id abc: " + l2ChainId)
 }
 
 ponder.on("L2ERC721Bridge:ERC721BridgeInitiated", async ({ event, context }) => {
@@ -27,7 +32,8 @@ ponder.on("L2ERC721Bridge:ERC721BridgeInitiated", async ({ event, context }) => 
       id,
       update: {
         state: "PENDING_TO_L1",
-        l2ChainId,
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       },
       create: {
         state: "PENDING_TO_L1",
@@ -38,6 +44,8 @@ ponder.on("L2ERC721Bridge:ERC721BridgeInitiated", async ({ event, context }) => 
         l1Token,
         timestamp,
         tokenId: tokenId.toString(),
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       }
     });
   }
@@ -61,7 +69,8 @@ ponder.on("L2ERC721Bridge:ERC721BridgeFinalized", async ({ event, context }) => 
       id,
       update: {
         state: "L2",
-        l2ChainId,
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       },
       create: {
         state: "L2",
@@ -72,6 +81,8 @@ ponder.on("L2ERC721Bridge:ERC721BridgeFinalized", async ({ event, context }) => 
         l1Token,
         timestamp,
         tokenId: tokenId.toString(),
+        txHash: event.log.transactionHash,
+        txChainId: chainId
       }
     });
   }

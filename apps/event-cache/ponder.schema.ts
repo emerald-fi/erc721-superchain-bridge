@@ -24,5 +24,7 @@ export default createSchema((p) => ({
     tokenId: p.string(),
     timestamp: p.bigint(),
     owner: p.string(),
+    txHash: p.string(),
+    txChainId: p.int(),
   }),
 }));

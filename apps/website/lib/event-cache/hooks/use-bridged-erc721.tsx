@@ -1,46 +1,49 @@
-import { Address } from "viem"
-
 import { graphql } from "../gql"
+import { GetBridgedErc721QueryQueryVariables, InputMaybe } from "../gql/graphql"
 import { useGraphQL } from "../use-graphql"
 
+export { BridgedErc721State } from "../gql/graphql"
+
 const getBridgedERC721ByOwnerQuery = graphql(/* GraphQL */ `
-  query getOtimismMintableERC721ByLocalTokenQuery(
-    $localToken: String!
-    $chainId: Int
+  query getBridgedERC721Query(
+    $owner: String
+    $l2chainId: Int
+    $states: [BridgedErc721State]
   ) {
-    optimismMintableERC721s(
-      where: { localToken: $localToken, chainId: $chainId }
+    bridgedErc721s(
+      where: { owner: $owner, l2ChainId: $l2chainId, state_in: $states }
+      orderBy: "timestamp"
+      orderDirection: "desc"
     ) {
       items {
         id
-        chainId
-        blockNumber
-        localToken
-        localName
-        localSymbol
-        remoteToken
-        remoteName
-        remoteSymbol
-        deployer
+        state
+        l1ChainId
+        l2ChainId
+        l1Token
+        l2Token
+        tokenId
+        owner
+        txHash
+        txChainId
+        timestamp
       }
     }
   }
 `)
 
-export function useOtimismMintableERC721ByLocalTokenQuery(params: {
-  localToken: Address
-  chainId?: number
-  query?: { enabled: boolean }
+export function useBridgedERC721ByOwner({
+  params,
+  query,
+}: {
+  params: GetBridgedErc721QueryQueryVariables
+  query?: InputMaybe<{ enabled: boolean }>
 }) {
   return useGraphQL(
     getBridgedERC721ByOwnerQuery,
     {
-      queryKey: [
-        "getOtimismMintableERC721ByLocalToken",
-        params.chainId,
-        params.localToken,
-      ],
-      enabled: params.query?.enabled,
+      queryKey: ["getBridgedERC721ByOwner", params],
+      enabled: query?.enabled,
     },
     params
   )
