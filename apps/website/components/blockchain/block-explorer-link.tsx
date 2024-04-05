@@ -15,7 +15,7 @@ type BlockExplorerLinkProps = HTMLAttributes<HTMLSpanElement> &
       }
     | {
         address?: never
-        tx: Hex
+        tx: Hex | undefined
         showExplorerName?: boolean
         chainId?: number
       }

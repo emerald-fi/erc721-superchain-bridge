@@ -30,7 +30,7 @@ export const TransactionStatus = ({
         {(isLoadingTx || isSuccess) && (
           <>
             {isLoadingTx ? "Processing..." : "Success!"}
-            <BlockExplorerLink showExplorerName address={hash} type="tx" />
+            <BlockExplorerLink showExplorerName tx={hash} />
           </>
         )}
       </div>

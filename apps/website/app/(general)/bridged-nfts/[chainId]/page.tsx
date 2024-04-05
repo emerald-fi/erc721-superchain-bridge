@@ -90,7 +90,7 @@ export default function BridgedCollectionsByChainIdPage({
           )}
         </NavigationMenuList>
       </NavigationMenu>
-      <div className="flex w-full flex-col gap-y-4 px-4 sm:px-8 py-10">
+      <div className="flex w-full flex-col gap-y-4 px-4 py-10 sm:px-8">
         {!address ? (
           <div className="mt-20">
             <ConnectButton />
