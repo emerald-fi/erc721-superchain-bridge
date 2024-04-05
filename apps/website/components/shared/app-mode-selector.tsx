@@ -20,12 +20,12 @@ export function AppModeSelector() {
             {appMode === "mainnet" ? (
               <>
                 <span className="text-2xl">🚀</span>
-                <span className="hidden sm:inline">Production</span>
+                <span className="text-base">Production</span>
               </>
             ) : (
               <>
                 <span className="text-2xl">🧪</span>
-                <span className="hidden sm:inline">Testing</span>
+                <span className="text-base">Testing</span>
               </>
             )}
           </div>

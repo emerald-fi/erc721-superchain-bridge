@@ -34,10 +34,6 @@ const menuItems = [
     href: "/bridged-collections",
   },
   {
-    title: "Bridged NFTs",
-    href: "/bridged-nfts",
-  },
-  {
     title: "Testing Tools",
     href: "/mint",
   },

@@ -12,7 +12,7 @@ export default function BridgedCollectionsPage() {
 
   useEffect(() => {
     router.push(
-      `/bridged-nfts/${Object.values(l2NetworksOptions[appMode])[0].chainId}`
+      `/account-history/${Object.values(l2NetworksOptions[appMode])[0].chainId}`
     )
   }, [])
 

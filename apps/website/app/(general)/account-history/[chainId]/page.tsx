@@ -62,19 +62,22 @@ export default function BridgedCollectionsByChainIdPage({
 
     // If AppMode changes, redirect to the first chain in the new mode
     if (!l2NetworksOptions[appMode][Number(chainId)]) {
-      router.push(`/bridged-nfts/${newChainId}`)
+      router.push(`/account-history/${newChainId}`)
     }
   }, [appMode])
 
   return (
     <div className="container mt-8 flex w-full max-w-xl flex-col items-center justify-center px-0">
+      <h2 className="px-2 pb-8 pt-4 text-center text-4xl font-black sm:pb-14 sm:text-6xl">
+        Your Bridged NFTs
+      </h2>
       <NavigationMenu>
         <NavigationMenuList className="flex w-full flex-wrap items-center gap-x-14 gap-y-4">
           {Object.values(l2NetworksOptions[appMode]).map(
             ({ name, chainId: optionChainId }) => (
               <NavigationMenuItem key={optionChainId}>
                 <Link
-                  href={`/bridged-nfts/${optionChainId}`}
+                  href={`/account-history/${optionChainId}`}
                   legacyBehavior
                   passHref
                 >
@@ -122,15 +125,17 @@ export default function BridgedCollectionsByChainIdPage({
                   className="flex w-full flex-col items-center gap-x-0 gap-y-5 p-6 sm:flex-row sm:gap-x-4"
                   key={bridgedErc721.id}
                 >
-                  <Image
-                    alt={`logo`}
-                    quality={100}
-                    width={120}
-                    height={120}
-                    className="shrink-0 rounded-md"
-                    src={tokenMetadata?.logoURI || "/logo.svg"}
-                  />
-                  <div className="flex w-full  flex-col gap-y-2 px-4">
+                  <div>
+                    <Image
+                      alt={`logo`}
+                      quality={100}
+                      width={120}
+                      height={120}
+                      className="shrink-0 rounded-md"
+                      src={tokenMetadata?.logoURI || "/logo.svg"}
+                    />
+                  </div>
+                  <div className="flex w-full flex-col gap-y-2 px-4">
                     <div>
                       <h3 className="text-left text-2xl font-semibold">
                         {tokenMetadata?.name || "Unknown"}
@@ -139,13 +144,20 @@ export default function BridgedCollectionsByChainIdPage({
                         # {bridgedErc721.tokenId}
                       </h4>
                       <h4 className="text-left text-xl font-semibold">
-                        State:{" "}
+                        Status:{" "}
                         {bridgedErc721.state === BridgedErc721State.L2
-                          ? "L2"
+                          ? l2NetworksOptions[appMode][bridgedErc721.l2ChainId]
+                              ?.name || "L1"
                           : bridgedErc721.state ===
                             BridgedErc721State.PendingToL1
-                          ? "Pending bridge to L1"
-                          : "Pending bridge to L2"}
+                          ? `Pending bridge to ${
+                              l1NetworkOptions[appMode]?.name || "L2"
+                            }`
+                          : `Pending bridge to ${
+                              l2NetworksOptions[appMode][
+                                bridgedErc721.l2ChainId
+                              ]?.name || "L2"
+                            }`}
                       </h4>
                     </div>
                     <div className="flex flex-col gap-y-1">
@@ -164,7 +176,7 @@ export default function BridgedCollectionsByChainIdPage({
                           </div>
                         </BlockExplorerLink>
                       </div>
-                      <div className="flex w-full flex-wrap items-center justify-between gap-x-2 pr-10 text-sm">
+                      <div className="flex w-full flex-wrap items-center justify-between gap-x-2 text-sm">
                         <div className="font-bold">{l1Chain.name}</div>
                         <BlockExplorerLink
                           className="w-full break-words text-xs text-muted-foreground no-underline underline-offset-2 hover:underline"
@@ -172,7 +184,7 @@ export default function BridgedCollectionsByChainIdPage({
                           address={bridgedErc721.l1Token as Address}
                         />
                       </div>
-                      <div className="flex w-full flex-wrap items-center justify-between gap-x-2 pr-10 text-sm">
+                      <div className="flex w-full flex-wrap items-center justify-between gap-x-2 text-sm">
                         <div className="font-bold">{l2Chain?.name}</div>
                         <BlockExplorerLink
                           className="w-full break-words text-xs text-muted-foreground no-underline underline-offset-2 hover:underline"
