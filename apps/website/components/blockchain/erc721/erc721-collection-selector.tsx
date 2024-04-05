@@ -254,10 +254,14 @@ export function Erc721CollectionSelector({
                       onSelect={() => {
                         const l1Token = token.address as Address
                         const l2Token = token.extensions?.bridgeInfo?.[chainId]
-                        handleSelect((chainType === "L1" ? l1Token : l2Token) as Address)
+                        handleSelect(
+                          (chainType === "L1" ? l1Token : l2Token) as Address
+                        )
                         setSelectedUnlistedToken(undefined)
                         setDestinationNetwork?.(undefined)
-                        setRemoteToken?.((chainType === "L1" ? l2Token : l1Token) as Address)
+                        setRemoteToken?.(
+                          (chainType === "L1" ? l2Token : l1Token) as Address
+                        )
                         setTokenMetadata?.({
                           logoURI: selectedTokenData?.logoURI,
                           name: selectedTokenData?.name ?? undefined,
