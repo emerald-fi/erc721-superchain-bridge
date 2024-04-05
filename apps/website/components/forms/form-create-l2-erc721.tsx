@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState, type HTMLAttributes } from "react"
-import Image from "next/image"
 import { optimismMintableErc721FactoryAbi } from "@/data/abis"
 import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
 import { zodResolver } from "@hookform/resolvers/zod"
+import Image from "next/image"
+import { useEffect, useState, type HTMLAttributes } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDebounce } from "usehooks-ts"
 import {
@@ -21,15 +21,10 @@ import {
 } from "wagmi"
 import { z } from "zod"
 
-import { useGetOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-get-optimism-mintable-erc721-by-remote-token"
-import {
-  useReadErc721Name,
-  useReadErc721Symbol,
-  useSimulateOptimismMintableErc721FactoryCreateOptimismMintableErc721,
-  useWriteOptimismMintableErc721FactoryCreateOptimismMintableErc721,
-} from "@/lib/generated/blockchain"
-import { useAppMode } from "@/lib/state/app-mode"
-import { cn } from "@/lib/utils"
+import { ConnectButton } from "@/components/blockchain/connect-button"
+import { ContractWriteButton } from "@/components/blockchain/contract-write-button"
+import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
+import { TransactionStatus } from "@/components/blockchain/transaction-status"
 import {
   Form,
   FormControl,
@@ -46,10 +41,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ConnectButton } from "@/components/blockchain/connect-button"
-import { ContractWriteButton } from "@/components/blockchain/contract-write-button"
-import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
-import { TransactionStatus } from "@/components/blockchain/transaction-status"
+import { useOtimismMintableERC721ByRemoteTokenQuery } from "@/lib/event-cache/hooks/use-optimism-mintable-erc721-by-remote-token"
+import {
+  useReadErc721Name,
+  useReadErc721Symbol,
+  useSimulateOptimismMintableErc721FactoryCreateOptimismMintableErc721,
+  useWriteOptimismMintableErc721FactoryCreateOptimismMintableErc721,
+} from "@/lib/generated/blockchain"
+import { useAppMode } from "@/lib/state/app-mode"
+import { cn } from "@/lib/utils"
 
 import { BlockExplorerLink } from "../blockchain/block-explorer-link"
 import { LinkComponent } from "../shared/link-component"
@@ -92,25 +92,25 @@ export const FormCreateL2ERC721 = ({
     name: keyof FormData
     type: string
   }[] = [
-    {
-      label: `L1 NFT Address ${l1Chain.name}`,
-      name: "remoteToken",
-      type: "text",
-    },
-    {
-      label: "Name",
-      name: "name",
-      type: "text",
-    },
-    {
-      label: "Symbol",
-      name: "symbol",
-      type: "text",
-    },
-  ]
+      {
+        label: `L1 NFT Address ${l1Chain.name}`,
+        name: "remoteToken",
+        type: "text",
+      },
+      {
+        label: "Name",
+        name: "name",
+        type: "text",
+      },
+      {
+        label: "Symbol",
+        name: "symbol",
+        type: "text",
+      },
+    ]
 
   const getOtimismMintableERC721ByRemoteTokenQuery =
-    useGetOtimismMintableERC721ByRemoteTokenQuery({
+    useOtimismMintableERC721ByRemoteTokenQuery({
       chainId: Number(watchL2ChainId),
       remoteToken: isAddress(watchRemoteToken)
         ? checksumAddress(watchRemoteToken)

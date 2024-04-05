@@ -27,7 +27,7 @@ const getOtimismMintableERC721ByRemoteTokenQuery = graphql(/* GraphQL */ `
   }
 `)
 
-export function useGetOtimismMintableERC721ByRemoteTokenQuery(params: {
+export function useOtimismMintableERC721ByRemoteTokenQuery(params: {
   remoteToken: Address
   chainId?: number
   query?: { enabled: boolean }

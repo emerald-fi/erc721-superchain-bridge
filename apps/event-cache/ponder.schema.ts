@@ -1,7 +1,7 @@
 import { createSchema } from "@ponder/core";
 
 export default createSchema((p) => ({
-  BridgedErcy721State: p.createEnum(["L1", "L2", "PENDING_TO_L1", "PENDING_TO_L2"]),
+  BridgedErc721State: p.createEnum(["L1", "L2", "PENDING_TO_L1", "PENDING_TO_L2"]),
   OptimismMintableERC721: p.createTable({
     id: p.string(),
     chainId: p.int(),
@@ -16,7 +16,7 @@ export default createSchema((p) => ({
   }),
   BridgedErc721: p.createTable({
     id: p.string(),
-    state: p.enum("BridgedErcy721State"),
+    state: p.enum("BridgedErc721State"),
     l1ChainId: p.int(),
     l2ChainId: p.int(),
     l1Token: p.string(),

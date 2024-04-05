@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useMemo, useState, type HTMLAttributes } from "react"
-import Image from "next/image"
 import { l1Erc721BridgeAbi } from "@/data/abis"
 import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
+import Image from "next/image"
+import { useEffect, useMemo, useState, type HTMLAttributes } from "react"
 import { type Address, type BaseError } from "viem"
 import {
   useAccount,
@@ -12,6 +12,15 @@ import {
   useWriteContract,
 } from "wagmi"
 
+import { BlockExplorerLink } from "@/components/blockchain/block-explorer-link"
+import { ConnectButton } from "@/components/blockchain/connect-button"
+import { ContractWriteButton } from "@/components/blockchain/contract-write-button"
+import { ImageIpfs } from "@/components/blockchain/image-ipfs"
+import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
+import { TransactionStatus } from "@/components/blockchain/transaction-status"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   useReadErc721GetApproved,
   useSimulateErc721Approve,
@@ -20,15 +29,6 @@ import {
 import { useNftsForOwner } from "@/lib/hooks/web3/use-nfts-for-owner"
 import { type AppMode } from "@/lib/state/app-mode"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Skeleton } from "@/components/ui/skeleton"
-import { BlockExplorerLink } from "@/components/blockchain/block-explorer-link"
-import { ConnectButton } from "@/components/blockchain/connect-button"
-import { ContractWriteButton } from "@/components/blockchain/contract-write-button"
-import { ImageIpfs } from "@/components/blockchain/image-ipfs"
-import { SwitchNetworkButton } from "@/components/blockchain/switch-network-button"
-import { TransactionStatus } from "@/components/blockchain/transaction-status"
 
 import { queryClient } from "../providers/root-provider"
 
@@ -58,7 +58,7 @@ export function FormL1ToL2Bridge({
   ...props
 }: FormL1ToL2BridgeProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
-
+  console.log("localToken", localToken, remoteToken)
   const l1Chain = l1NetworkOptions[appMode]
   const l2Chains = l2NetworksOptions[appMode]
 
