@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type HTMLAttributes } from "react"
 import Image from "next/image"
 import { l1Erc721BridgeAbi } from "@/data/abis"
+import { ENS_CONTRACT_ADDRESS } from "@/data/constants"
 import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
 import { type Address, type BaseError } from "viem"
 import {
@@ -69,6 +70,10 @@ export function FormL1ToL2Bridge({
   })
 
   const { chainId: currentChainId } = useAccount()
+  const isEnsContract = useMemo(
+    () => localToken === ENS_CONTRACT_ADDRESS,
+    [localToken]
+  )
 
   // ERC721 Approve
   const readErc721GetApproved = useReadErc721GetApproved({
@@ -189,7 +194,7 @@ export function FormL1ToL2Bridge({
             <Label>Item</Label>
             {nft ? (
               <div className="flex items-center gap-x-5 p-2">
-                <div className="relative h-[80px] w-[80px]">
+                <div className="relative h-[80px] min-w-[80px]">
                   {imageLoaded ? null : (
                     <Skeleton className="absolute h-[80px] w-[80px] rounded-md" />
                   )}
@@ -205,7 +210,9 @@ export function FormL1ToL2Bridge({
                     onLoad={() => setImageLoaded(true)}
                   />
                 </div>
-                <div className="text-3xl font-semibold">#{nft.tokenId}</div>
+                <div className="overflow-x-auto text-3xl font-semibold">
+                  {isEnsContract ? nft.name : "#" + nft.tokenId}
+                </div>
               </div>
             ) : (
               <Skeleton className="h-16 w-full" />
