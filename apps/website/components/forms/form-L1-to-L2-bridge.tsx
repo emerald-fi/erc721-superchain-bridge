@@ -210,7 +210,7 @@ export function FormL1ToL2Bridge({
                     onLoad={() => setImageLoaded(true)}
                   />
                 </div>
-                <div className="text-3xl overflow-x-auto font-semibold">
+                <div className="overflow-x-auto text-3xl font-semibold">
                   {isEnsContract ? nft.name : "#" + nft.tokenId}
                 </div>
               </div>

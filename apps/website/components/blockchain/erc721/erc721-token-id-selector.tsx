@@ -77,7 +77,7 @@ export function Erc721TokenIdSelector({
       {filteredTokenList?.map((nft) => (
         <Card
           className={cn(
-            "flex h-fit cursor-pointer w-full items-center gap-x-4 border-2 p-4 transition duration-200",
+            "flex h-fit w-full cursor-pointer items-center gap-x-4 border-2 p-4 transition duration-200",
             selectedTokenId === nft.tokenId
               ? "border-primary"
               : "hover:border-primary/25"
@@ -98,7 +98,7 @@ export function Erc721TokenIdSelector({
               onLoad={() => setImageLoaded(true)}
             />
           </div>
-          <div className="text-xl overflow-x-auto font-semibold">
+          <div className="overflow-x-auto text-xl font-semibold">
             {isEnsContract ? nft.name : "#" + nft.tokenId}
           </div>
         </Card>
