@@ -1,14 +1,14 @@
-import { expect, test } from "vitest";
-import { type Address, erc721Abi } from "viem";
 import { multicall } from "@wagmi/core";
+import { erc721Abi, type Address } from "viem";
+import { expect, test } from "vitest";
 import { optimismMintableErc721FactoryAbi } from "../config/abis/optimism-mintable-erc721-factory-abi.js";
 import {
-  l2ChainIds,
-  l2ChainIdsTestnet,
   config,
   l1ChainIdsTestnet,
+  l2ChainIds,
+  l2ChainIdsTestnet,
 } from "../config/wagmi.js";
-import { testnetTokenList, defaultTokenList } from "../index.js";
+import { defaultTokenList, testnetTokenList } from "../index.js";
 
 const OptimismMintableERC721FactoryAddress =
   "0x4200000000000000000000000000000000000017";
@@ -16,10 +16,17 @@ const OptimismMintableERC721FactoryAddress =
 // Production token list
 
 test("Tokens are valid ERC721s", async () => {
+
+  // Removes ENS addresses from the default token list,
+  // since they don't have a name or symbol
+  const ENSMainnetAddress = "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85";
+  const filteredTokens = defaultTokenList.tokens.filter(
+    ({ address }) => address !== ENSMainnetAddress,
+  );
   const [names, symbols] = await Promise.all([
     // Fetch the name of all tokens in the default token list
     multicall(config, {
-      contracts: defaultTokenList.tokens.map(({ address }) => ({
+      contracts: filteredTokens.map(({ address }) => ({
         address: address as Address,
         abi: erc721Abi,
         functionName: "name",
@@ -27,7 +34,7 @@ test("Tokens are valid ERC721s", async () => {
     }),
     // Fetch the symbol of all tokens in the default token list
     multicall(config, {
-      contracts: defaultTokenList.tokens.map(({ address }) => ({
+      contracts: filteredTokens.map(({ address }) => ({
         address: address as Address,
         abi: erc721Abi,
         functionName: "symbol",
