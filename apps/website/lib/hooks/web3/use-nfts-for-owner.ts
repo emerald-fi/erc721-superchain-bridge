@@ -120,9 +120,9 @@ export function useNftsForOwner({ owner, contractAddresses, chainId }: Params) {
           ...nft,
           // Adds a convenience property that gets fallback image from the NFT metadata
           imageUrl:
-            nft.image.cachedUrl ??
             nft.image.pngUrl ??
             nft.image.originalUrl ??
+            nft.image.cachedUrl ??
             nft.contract.openSeaMetadata?.imageUrl,
         }))
       return allNfts

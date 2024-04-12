@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react"
 import Image from "next/image"
+import { ENS_CONTRACT_ADDRESS } from "@/data/constants"
 import { type Address } from "viem"
 
 import { type Nft } from "@/lib/hooks/web3/use-nfts-for-owner"
@@ -31,6 +32,12 @@ export function Erc721TokenIdSelector({
     },
     [setSelectedTokenId]
   )
+
+  const isEnsContract = useMemo(
+    () => contractAddress === ENS_CONTRACT_ADDRESS,
+    [contractAddress]
+  )
+
   const filteredTokenList = useMemo(
     () =>
       nfts?.filter(
@@ -63,14 +70,14 @@ export function Erc721TokenIdSelector({
   return (
     <div
       className={cn(
-        "grid max-h-[380px] w-full grid-cols-1 gap-4 overflow-y-auto rounded-xl border border-primary/10 p-3 sm:grid-cols-2",
+        "grid max-h-[380px] w-full grid-cols-1 gap-2 overflow-y-auto rounded-xl border border-primary/10 p-3",
         className
       )}
     >
       {filteredTokenList?.map((nft) => (
         <Card
           className={cn(
-            "flex h-fit cursor-pointer items-center gap-x-6 border-2  p-4 transition duration-200",
+            "flex h-fit cursor-pointer w-full items-center gap-x-4 border-2 p-4 transition duration-200",
             selectedTokenId === nft.tokenId
               ? "border-primary"
               : "hover:border-primary/25"
@@ -78,20 +85,22 @@ export function Erc721TokenIdSelector({
           onClick={() => handleSelect(nft.tokenId)}
           key={nft.tokenId}
         >
-          <div className="relative h-[60px] w-[60px]">
+          <div className="relative h-[64px] min-w-[64px]">
             {imageLoaded ? null : (
-              <Skeleton className="absolute h-[60px] w-[60px] rounded-md" />
+              <Skeleton className="absolute h-[64px] w-[64px] rounded-md" />
             )}
             <Image
-              width={60}
-              height={60}
+              width={64}
+              height={64}
               className={cn("absolute rounded-md", !imageLoaded && "invisible")}
               alt={`${nft.tokenId} image`}
               src={nft.imageUrl ?? "/logo.svg"}
               onLoad={() => setImageLoaded(true)}
             />
           </div>
-          <div className="text-2xl font-semibold">#{nft.tokenId}</div>
+          <div className="text-xl overflow-x-auto font-semibold">
+            {isEnsContract ? nft.name : "#" + nft.tokenId}
+          </div>
         </Card>
       ))}
     </div>
