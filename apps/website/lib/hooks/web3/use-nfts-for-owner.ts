@@ -1,3 +1,4 @@
+import { ENS_CONTRACT_ADDRESS } from "@/data/constants"
 import { env } from "@/env.mjs"
 import { useQuery } from "@tanstack/react-query"
 import { type Address } from "viem"
@@ -9,7 +10,7 @@ export interface Nft {
   imageUrl?: string | null
   contract: {
     address: Address
-    name: string
+    name: string | null
     symbol: string
     totalSupply: number | null
     tokenType: "ERC721" | "ERC1155" | "UNKNOWN"
@@ -116,6 +117,13 @@ export function useNftsForOwner({ owner, contractAddresses, chainId }: Params) {
       )
       const allNfts = responses
         .flatMap((response) => response)
+        // Filters out ENS names that doesn't have a `name` property,
+        // Meaning they have expired
+        .filter(
+          ({ name, contract }) =>
+            contract?.address !== ENS_CONTRACT_ADDRESS ||
+            (contract?.address === ENS_CONTRACT_ADDRESS && name !== null)
+        )
         .map((nft) => ({
           ...nft,
           // Adds a convenience property that gets fallback image from the NFT metadata
