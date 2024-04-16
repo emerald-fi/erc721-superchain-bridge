@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs"
 import { createPublicClient, http } from "viem"
 import {
   base,
@@ -13,42 +14,30 @@ import { publicActionsL1, publicActionsL2 } from "viem/op-stack"
 
 export const mainnetPublicClient = createPublicClient({
   chain: mainnet,
-  transport: http(
-    "https://eth-mainnet.g.alchemy.com/v2/imurRzka-9M0AUppaAAFZx7QVv3pqMNU"
-  ),
+  transport: http(env.NEXT_PUBLIC_MAINNET_RPC),
 }).extend(publicActionsL1())
 export const sepoliaPublicClient = createPublicClient({
   chain: sepolia,
-  transport: http(
-    "https://eth-sepolia.g.alchemy.com/v2/Mu9SzE6925AGVSMdGyRS3X2wQNRXyQME"
-  ),
+  transport: http(env.NEXT_PUBLIC_SEPOLIA_RPC),
 }).extend(publicActionsL1())
 
 // L2 Public Clients
 
 export const optimismPublicClient = createPublicClient({
   chain: optimism,
-  transport: http(
-    "https://opt-mainnet.g.alchemy.com/v2/AxNqYtzVHrAzXLjZHuNGty2zLYaPMJh7"
-  ),
+  transport: http(env.NEXT_PUBLIC_OPTIMISM_RPC),
 }).extend(publicActionsL2())
 export const basePublicClient = createPublicClient({
   chain: base,
-  transport: http(
-    "https://base-mainnet.g.alchemy.com/v2/q1PUZ7dQsmOFrQIbf4YDwivcEeNAT_vR"
-  ),
+  transport: http(env.NEXT_PUBLIC_BASE_RPC),
 }).extend(publicActionsL2())
 export const optimismSepoliaPublicClient = createPublicClient({
   chain: optimismSepolia,
-  transport: http(
-    "https://opt-sepolia.g.alchemy.com/v2/XDl5n49_YWGzzrxIeiNGOznM_JNpy4l4"
-  ),
+  transport: http(env.NEXT_PUBLIC_OPTIMISM_SEPOLIA_RPC),
 }).extend(publicActionsL2())
 export const baseSepoliaPublicClient = createPublicClient({
   chain: baseSepolia,
-  transport: http(
-    "https://base-sepolia.g.alchemy.com/v2/80Rxv3F3Vxcxdik8QVAbxWpmR4BZwStv"
-  ),
+  transport: http(env.NEXT_PUBLIC_BASE_SEPOLIA_RPC),
 }).extend(publicActionsL2())
 
 export function getPublicClients({ l2ChainId }: { l2ChainId: number }) {
