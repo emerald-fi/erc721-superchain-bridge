@@ -355,7 +355,8 @@ export type AllOptimismMintableErc721QueryQuery = {
 
 export type GetBridgedErc721QueryQueryVariables = Exact<{
   owner?: InputMaybe<Scalars["String"]["input"]>
-  l2chainId?: InputMaybe<Scalars["Int"]["input"]>
+  l1ChainId?: InputMaybe<Scalars["Int"]["input"]>
+  l2ChainId?: InputMaybe<Scalars["Int"]["input"]>
   states?: InputMaybe<
     Array<InputMaybe<BridgedErc721State>> | InputMaybe<BridgedErc721State>
   >
@@ -545,7 +546,15 @@ export const GetBridgedErc721QueryDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "l2chainId" },
+            name: { kind: "Name", value: "l1ChainId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "l2ChainId" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
@@ -587,10 +596,18 @@ export const GetBridgedErc721QueryDocument = {
                     },
                     {
                       kind: "ObjectField",
+                      name: { kind: "Name", value: "l1ChainId" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "l1ChainId" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
                       name: { kind: "Name", value: "l2ChainId" },
                       value: {
                         kind: "Variable",
-                        name: { kind: "Name", value: "l2chainId" },
+                        name: { kind: "Name", value: "l2ChainId" },
                       },
                     },
                     {

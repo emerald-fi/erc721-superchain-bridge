@@ -7,11 +7,17 @@ export { BridgedErc721State } from "../gql/graphql"
 const getBridgedERC721ByOwnerQuery = graphql(/* GraphQL */ `
   query getBridgedERC721Query(
     $owner: String
-    $l2chainId: Int
+    $l1ChainId: Int
+    $l2ChainId: Int
     $states: [BridgedErc721State]
   ) {
     bridgedErc721s(
-      where: { owner: $owner, l2ChainId: $l2chainId, state_in: $states }
+      where: {
+        owner: $owner
+        l1ChainId: $l1ChainId
+        l2ChainId: $l2ChainId
+        state_in: $states
+      }
       orderBy: "timestamp"
       orderDirection: "desc"
     ) {

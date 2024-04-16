@@ -9,6 +9,7 @@ type NetworkOption = {
 }
 
 type L2NetworkOption = NetworkOption & {
+  l1ChainId: number
   l1ERC721BridgeAddress: Address
   l2ERC721BridgeAddress: Address
 }
@@ -32,6 +33,7 @@ export const l2NetworksOptions: Record<
 > = {
   mainnet: {
     10: {
+      l1ChainId: 1,
       chainId: 10,
       name: "Optimism",
       logoUrl: "/networks/optimism.png",
@@ -39,6 +41,7 @@ export const l2NetworksOptions: Record<
       l2ERC721BridgeAddress: "0x4200000000000000000000000000000000000014",
     },
     8453: {
+      l1ChainId: 1,
       chainId: 8453,
       name: "Base",
       logoUrl: "/networks/base.svg",
@@ -48,6 +51,7 @@ export const l2NetworksOptions: Record<
   },
   testnet: {
     11155420: {
+      l1ChainId: 11155111,
       chainId: 11155420,
       name: "Optimism Sepolia Testnet",
       logoUrl: "/networks/optimism.png",
@@ -55,6 +59,7 @@ export const l2NetworksOptions: Record<
       l2ERC721BridgeAddress: "0x4200000000000000000000000000000000000014",
     },
     84532: {
+      l1ChainId: 11155111,
       chainId: 84532,
       name: "Base Sepolia Testnet",
       logoUrl: "/networks/base.svg",

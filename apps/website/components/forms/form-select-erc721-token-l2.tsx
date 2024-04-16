@@ -67,6 +67,7 @@ export function FormSelectErc721TokenL2({
   })
   const watchSourceNetwork = form.watch("sourceNetwork")
   const watchLocalToken = form.watch("localToken")
+  const watchRemoteToken = form.watch("remoteToken")
 
   const tokenList = useTokenList()
   // Filter token list to only show tokens that have a token address for the selected network
@@ -213,7 +214,9 @@ export function FormSelectErc721TokenL2({
                 <Erc721TokenIdSelector
                   className="border-none p-0"
                   nfts={nfts}
-                  contractAddress={watchLocalToken as Address}
+                  chainType="L2"
+                  l1ContractAddress={watchRemoteToken as Address}
+                  l2ContractAddress={watchLocalToken as Address}
                   onSelectTokenId={(tokenId) => field.onChange(tokenId)}
                 />
                 <FormMessage />

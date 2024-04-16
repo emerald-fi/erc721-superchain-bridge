@@ -10,16 +10,22 @@ import { cn } from "@/lib/utils"
 import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
+type ChainType = "L1" | "L2"
+
 interface Erc721TokenIdSelectorPropsProps {
   className?: string
+  chainType: ChainType
   onSelectTokenId?: (id: string) => void
-  contractAddress: Address | undefined
+  l1ContractAddress: Address | undefined
+  l2ContractAddress: Address | undefined
   nfts: Nft[] | undefined | null
 }
 
 export function Erc721TokenIdSelector({
+  chainType,
   className,
-  contractAddress,
+  l1ContractAddress,
+  l2ContractAddress,
   nfts,
   onSelectTokenId,
 }: Erc721TokenIdSelectorPropsProps) {
@@ -34,17 +40,20 @@ export function Erc721TokenIdSelector({
   )
 
   const isEnsContract = useMemo(
-    () => contractAddress === ENS_CONTRACT_ADDRESS,
-    [contractAddress]
+    () => l1ContractAddress === ENS_CONTRACT_ADDRESS,
+    [l1ContractAddress]
   )
 
   const filteredTokenList = useMemo(
     () =>
-      nfts?.filter(
-        (nft) =>
-          nft.contract.address.toLowerCase() === contractAddress?.toLowerCase()
+      nfts?.filter((nft) =>
+        chainType === "L1"
+          ? nft.contract.address.toLowerCase() ===
+            l1ContractAddress?.toLowerCase()
+          : nft.contract.address.toLowerCase() ===
+            l2ContractAddress?.toLowerCase()
       ),
-    [nfts, contractAddress]
+    [nfts, l1ContractAddress, l2ContractAddress, chainType]
   )
 
   if (nfts === undefined) {
@@ -85,14 +94,14 @@ export function Erc721TokenIdSelector({
           onClick={() => handleSelect(nft.tokenId)}
           key={nft.tokenId}
         >
-          <div className="relative h-[64px] min-w-[64px]">
+          <div className="relative h-[64px] min-w-[64px] overflow-hidden rounded-md">
             {imageLoaded ? null : (
               <Skeleton className="absolute h-[64px] w-[64px] rounded-md" />
             )}
             <Image
               width={64}
               height={64}
-              className={cn("absolute rounded-md", !imageLoaded && "invisible")}
+              className={cn("absolute", !imageLoaded && "invisible")}
               alt={`${nft.tokenId} image`}
               src={nft.imageUrl ?? "/logo.svg"}
               onLoad={() => setImageLoaded(true)}

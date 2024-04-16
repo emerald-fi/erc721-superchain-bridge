@@ -1,8 +1,15 @@
 import { ClassValue, clsx } from "clsx"
+import moment from "moment"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function formatTimestamp(timestamp: number | undefined): string {
+  if (!timestamp) return ""
+  const formattedTimestamp = moment(timestamp).format("MMM D, YYYY h:mm A")
+  return formattedTimestamp
 }
 
 export function formatDate(input: string | number): string {

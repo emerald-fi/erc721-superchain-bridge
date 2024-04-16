@@ -11,7 +11,9 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FormL1ToL2Bridge } from "@/components/forms/form-L1-to-L2-bridge"
+import { FormL2ToL1Bridge } from "@/components/forms/form-L2-to-L1-bridge"
 import { FormSelectErc721TokenL1 } from "@/components/forms/form-select-erc721-token-l1"
+import { FormSelectErc721TokenL2 } from "@/components/forms/form-select-erc721-token-l2"
 import { LinkComponent } from "@/components/shared/link-component"
 
 export default function HomePage() {
@@ -65,12 +67,12 @@ export default function HomePage() {
               >
                 To Superchain
               </TabsTrigger>
-              {/* <TabsTrigger
+              <TabsTrigger
                 className="flex flex-1 items-center justify-center rounded-full py-3 text-lg data-[state=active]:border-2"
                 value="to-ethereum"
               >
                 To Ethereum
-              </TabsTrigger> */}
+              </TabsTrigger>
             </TabsList>
             <TabsContent
               className="rounded-xl bg-white dark:bg-black"
@@ -105,7 +107,7 @@ export default function HomePage() {
                 )}
               </Card>
             </TabsContent>
-            {/* <TabsContent
+            <TabsContent
               className="rounded-xl bg-white dark:bg-black"
               value="to-ethereum"
             >
@@ -137,7 +139,7 @@ export default function HomePage() {
                   />
                 )}
               </Card>
-            </TabsContent> */}
+            </TabsContent>
           </Tabs>
         </div>
         <SectionImportantLinks />

@@ -36,7 +36,7 @@ export default function BridgedCollectionsByChainIdPage({
   const bridgedERC721ByOwnerQuery = useBridgedERC721ByOwner({
     params: {
       owner: address,
-      l2chainId: Number(chainId),
+      l2ChainId: Number(chainId),
       states: [
         BridgedErc721State.L2,
         BridgedErc721State.PendingToL1,

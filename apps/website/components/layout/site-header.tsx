@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 
+import { cn } from "@/lib/utils"
 import { ConnectButton } from "@/components/blockchain/connect-button"
 
 import { AppModeSelector } from "../shared/app-mode-selector"
@@ -30,12 +31,20 @@ export function SiteHeader() {
         <AppModeSelector />
       </div>
       <div className="flex items-center gap-x-4">
-        <LinkComponent
-          href="/account-history"
-          className={buttonVariants({ variant: "ghost" })}
-        >
-          Account History
-        </LinkComponent>
+        <div className="flex items-center gap-x-2">
+          <LinkComponent
+            href="/account-history"
+            className={cn(buttonVariants({ variant: "link" }), "px-1")}
+          >
+            Account History
+          </LinkComponent>
+          <LinkComponent
+            href="/pending-withdrawals"
+            className={cn(buttonVariants({ variant: "link" }), "px-1")}
+          >
+            Pending Withdrawals
+          </LinkComponent>
+        </div>
         <div className="flex items-center gap-x-2">
           <ConnectButton className="min-w-fit shrink-0" />
         </div>
