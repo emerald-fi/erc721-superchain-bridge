@@ -67,6 +67,7 @@ export function FormSelectErc721TokenL1({
     resolver: zodResolver(formSchema),
   })
   const watchLocalToken = form.watch("localToken")
+  const watchRemoteToken = form.watch("remoteToken")
   const watchOverrideDestinationNetwork = form.watch(
     "overrideDestinationNetwork"
   )
@@ -161,7 +162,9 @@ export function FormSelectErc721TokenL1({
                 <Erc721TokenIdSelector
                   className="border-none p-0"
                   nfts={nfts}
-                  contractAddress={watchLocalToken as Address}
+                  chainType="L1"
+                  l1ContractAddress={watchLocalToken as Address}
+                  l2ContractAddress={watchRemoteToken as Address}
                   onSelectTokenId={(tokenId) => field.onChange(tokenId)}
                 />
                 <FormMessage />

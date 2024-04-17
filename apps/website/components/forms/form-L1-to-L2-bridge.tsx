@@ -271,15 +271,9 @@ export function FormL1ToL2Bridge({
           </div>
         </>
       )}
-      {waitForErc721Approve.isLoading ? (
-        <TransactionStatus
-          error={simulateErc721Approve.error as BaseError}
-          hash={writeErc721Approve.data}
-          isError={simulateErc721Approve.isError}
-          isLoadingTx={waitForErc721Approve.isLoading}
-          isSuccess={waitForErc721Approve.isSuccess}
-        />
-      ) : (
+      {readErc721GetApproved.data === l1ERC721BridgeAddress ||
+      waitForErc721Approve.isSuccess ||
+      waitForErc721Bridge.isLoading ? (
         <TransactionStatus
           error={simulateErc721Bridge.error as BaseError}
           hash={writeErc721Bridge.data}
@@ -287,7 +281,15 @@ export function FormL1ToL2Bridge({
           isLoadingTx={waitForErc721Bridge.isLoading}
           isSuccess={waitForErc721Bridge.isSuccess}
         />
-      )}
+      ) : !waitForErc721Bridge.isSuccess ? (
+        <TransactionStatus
+          error={simulateErc721Approve.error as BaseError}
+          hash={writeErc721Approve.data}
+          isError={simulateErc721Approve.isError}
+          isLoadingTx={waitForErc721Approve.isLoading}
+          isSuccess={waitForErc721Approve.isSuccess}
+        />
+      ) : null}
     </div>
   )
 }

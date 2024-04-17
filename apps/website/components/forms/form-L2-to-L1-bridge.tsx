@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type HTMLAttributes } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { l2Erc721BridgeAbi } from "@/data/abis"
 import { l1NetworkOptions, l2NetworksOptions } from "@/data/networks/options"
 import { type Address, type BaseError } from "viem"
@@ -170,8 +171,17 @@ export function FormL2ToL1Bridge({
         <div className="flex w-full flex-col gap-y-8">
           <div className="text-lg">
             You have successfully started bridging your NFT back to the{" "}
-            <span className="font-semibold">{l1Chain.name} L1</span>. In a week,
-            you will be able to see it in your wallet.
+            <span className="font-semibold">{l1Chain.name} L1</span>.
+            <br />
+            Go to the{" "}
+            <Link
+              className="font-semibold underline-offset-4 hover:underline"
+              href="/pending-withdrawals"
+            >
+              Pending Withdrawals
+            </Link>{" "}
+            page to proceed with the next steps. The full process to bridge your
+            NFT back to the L1 takes around 1 week.
           </div>
           <Button
             className="w-full"
@@ -263,7 +273,17 @@ export function FormL2ToL1Bridge({
           </div>
         </>
       )}
-      {waitForErc721Approve.isLoading && (
+      {readErc721GetApproved.data === l2ERC721BridgeAddress ||
+      waitForErc721Approve.isSuccess ||
+      waitForErc721Bridge.isLoading ? (
+        <TransactionStatus
+          error={simulateErc721Bridge.error as BaseError}
+          hash={writeErc721Bridge.data}
+          isError={simulateErc721Bridge.isError}
+          isLoadingTx={waitForErc721Bridge.isLoading}
+          isSuccess={waitForErc721Bridge.isSuccess}
+        />
+      ) : !waitForErc721Bridge.isSuccess ? (
         <TransactionStatus
           error={simulateErc721Approve.error as BaseError}
           hash={writeErc721Approve.data}
@@ -271,14 +291,7 @@ export function FormL2ToL1Bridge({
           isLoadingTx={waitForErc721Approve.isLoading}
           isSuccess={waitForErc721Approve.isSuccess}
         />
-      )}
-      <TransactionStatus
-        error={simulateErc721Bridge.error as BaseError}
-        hash={writeErc721Bridge.data}
-        isError={simulateErc721Bridge.isError}
-        isLoadingTx={waitForErc721Bridge.isLoading}
-        isSuccess={waitForErc721Bridge.isSuccess}
-      />
+      ) : null}
     </div>
   )
 }
