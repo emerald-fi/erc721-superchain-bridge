@@ -123,7 +123,7 @@ export function WithdrawalCard({
     isError: isErrorProveTx,
     error: errorProveTx,
   } = useWaitForTransactionReceipt({
-    hash: proveHash ?? finalizeHash,
+    hash: proveHash,
   })
   const {
     isLoading: isLoadingFinalizeTx,
