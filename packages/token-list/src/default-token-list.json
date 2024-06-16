@@ -108,6 +108,20 @@
     },
     {
       "chainId": 1,
+      "address": "0xE169c2ED585e62B1d32615BF2591093A629549b6",
+      "name": "NounPunks",
+      "symbol": "NP",
+      "logoURI": "https://pbs.twimg.com/profile_images/1592322696188203010/2Y6EdJXt_400x400.jpg",
+      "extensions": {
+        "bridgeInfo": {
+          "8453": {
+            "tokenAddress": "0xf356a3e9e3eCb6693D86206876af325C7E472fF9"
+          }
+        }
+      }
+    },
+    {
+      "chainId": 1,
       "address": "0x60E4d786628Fea6478F785A6d7e704777c86a7c6",
       "name": "Mutant Ape Yacht Club",
       "symbol": "MAYC",
